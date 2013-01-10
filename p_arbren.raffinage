@@ -1,0 +1,73 @@
+
+An_Rechercher :
+===============
+
+Recherche une valeur dans un arbre et retourne l'arbre dont la valeur est racine si elle est trouvée, un arbre vide sinon
+
+Paramètres : a : arbren (D)
+             data : character (D)
+Type retour : arbren
+Précondition : /
+Postcondition : Un arbre est retourné (vide éventuellement)
+Exception : /
+
+structure de contrôle : If
+	Tester si l'arbre est vide
+		Si oui, retourner l'arbre vide
+		Sinon si la valeur de la racine vaut data, retourner l'arbre
+		Sinon
+			1. Rechercher dans les frères
+			2. Rechercher dans les fils
+
+
+An_Supprimer_Fils :
+===================
+
+Supprime le nième fils d'un arbre
+Paramètres : a : arbren (D/R)
+             n : integer (D)
+Précondition : n >= 1
+Postcondition : Le nième fils est supprimé. Les fils n+i+1 deviennent les fils n+i (i>=0)
+Exception : ARBRE_VIDE, FILS_ABSENT
+
+structure de contrôle : If
+	Si l'arbre est vide, lever une exception ARBRE_VIDE
+	Si l'arbre n'a pas de fils, lever une exception FILS_ABSENT
+	Si n=1, Supprimer le 1er fils
+	Sinon:
+		Supprimer le (n-1)ième frere du premier fils
+		En cas d'exception FRERE_ABSENT, lever une exception FILS_ABSENT
+
+An_Supprimer_Frere :
+====================
+
+Supprimer le nième frère d'un arbre
+
+Paramètres : a : arbren (D/R)
+             n : integer (D)
+Précondition : n >= 1
+Postcondition : Le nième frère est supprimé. Les frères n+i+1 deviennent les frères n+i (i>=0)
+Exception : ARBRE_VIDE, FRERE_ABSENT
+
+structure de contrôle : If
+	Si l'arbre est vide, lever une exception ARBRE_VIDE
+	Sinon
+		1. Parcourir les frères
+		2. Supprimer le nième frère s'il existe, sinon lever une exception
+
+1. Parcourir les fils
+structure de controle : séquence
+	1. Initialiser un pointeur temp et un entier p
+	2. Parcourir les frères
+		structure de contrôle : Tant que
+		Tant que temp.all.frere /= Null et p <= n
+			1. Assigner temp.all.frere à temp
+			2. Incrémenter p
+
+2. Supprimer le nième frère s'il existe, sinon lever une exception
+structure de contrôle : If
+	Si p=n et temp.all.frere /= Null :
+		Supprimer le frère de temp
+	Sinon lever une exception FRERE_ABSENT
+
+
