@@ -90,6 +90,22 @@ package body p_arbre_poly is
     end if;
   end Ap_Pere;
 
+  -- Fonction Ap_Pere_Existe
+  -- Sémantique : Détecter si un arbre polynôme a un père ou non
+  -- Paramètres : a : arbre_poly (D)
+  -- Type retour : booléen (vaut vrai si l'arbre a un père)
+  -- Précondition : /
+  -- Postcondition : /
+  -- Exception : ARBRE_VIDE
+  function Ap_Pere_Existe(a : in arbre_poly) return boolean is
+  begin
+    if a = Null then
+      raise ARBRE_VIDE;
+    else
+      return (a.all.pere /= Null);
+    end if;
+  end Ap_Pere_Existe;
+
   -- Fonction Ap_Frere
   -- Sémantique : Retourne le premier frère d'un arbre
   -- Paramètres : a : arbre_poly (D)
@@ -108,6 +124,22 @@ package body p_arbre_poly is
     end if;
   end Ap_Frere;
 
+  -- Fonction Ap_Frere_Existe
+  -- Sémantique : Détecter si un arbre polynôme a au moins un frère ou non
+  -- Paramètres : a : arbre_poly (D)
+  -- Type retour : booléen (vaut vrai si l'arbre a au moins un frère)
+  -- Précondition : /
+  -- Postcondition : /
+  -- Exception : ARBRE_VIDE
+  function Ap_Frere_Existe(a : in arbre_poly) return boolean is
+  begin
+    if a = Null then
+      raise ARBRE_VIDE;
+    else
+      return (a.all.frere /= Null);
+    end if;
+  end Ap_Frere_Existe;
+
   -- Fonction Ap_Fils
   -- Sémantique : Retourne le premier fils d'un arbre
   -- Paramètres : a : arbre_poly (D)
@@ -125,6 +157,22 @@ package body p_arbre_poly is
       return a.all.fils;
     end if;
   end Ap_Fils;
+
+  -- Fonction Ap_Fils_Existe
+  -- Sémantique : Détecter si un arbre polynôme a au moins un fils ou non
+  -- Paramètres : a : arbre_poly (D)
+  -- Type retour : booléen (vaut vrai si l'arbre a au moins un fils)
+  -- Précondition : /
+  -- Postcondition : /
+  -- Exception : ARBRE_VIDE
+  function Ap_Fils_Existe(a : in arbre_poly) return boolean is
+  begin
+    if a = Null then
+      raise ARBRE_VIDE;
+    else
+      return (a.all.fils /= Null);
+    end if;
+  end Ap_Fils_Existe;
 
   -------------------------
   -- Procédure Ap_Afficher_Aux

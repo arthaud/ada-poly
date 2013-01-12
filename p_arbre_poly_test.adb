@@ -96,25 +96,13 @@ begin
   -----------------------------
   Put("Suppression d'un frère");
   Ap_Supprimer_Frere(fils1, 1);
-  
-  begin
-    a := Ap_Frere(fils1);
-    Test(false);
-  exception
-      when FRERE_ABSENT => Test(true);
-  end;
+  Test(not(Ap_Frere_Existe(fils1)));  
 
   ----------------------------
   -- Test Ap_Supprimer_Fils --
   ----------------------------
   Put("Suppression d'un fils");
   Ap_Supprimer_Fils(arbre, 1);
-
-  begin
-    a := Ap_Fils(arbre);
-    Test(false);
-  exception
-      when FILS_ABSENT => Test(true);
-  end;
+  Test(not(Ap_Fils_Existe(arbre)));
 
 end p_arbre_poly_test;
