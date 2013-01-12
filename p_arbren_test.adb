@@ -54,19 +54,21 @@ procedure p_arbren_test is
 	b : boolean;
 begin
 	
-	-- Test An_Creer_Vide et An_Vide
+	-----------------------------------
+  -- Test An_Creer_Vide et An_Vide --
+  -----------------------------------
 	Put("Création d'un arbre vide");
 	Test(An_Vide(An_Creer_Vide));
-	-- Fin Test An_Creer_Vide
-	
 
-	-- Test An_Creer_Feuille et An_Vide
+  --------------------------------------
+	-- Test An_Creer_Feuille et An_Vide --
+  --------------------------------------
 	Put("Création d'une feuille");
 	Test(not(An_Vide(An_Creer_Feuille('a'))));
-	-- Fin Test An_Creer_Feuille
-	
 
-	-- Test An_Valeur
+  --------------------
+	-- Test An_Valeur --
+  --------------------
 	Put("Récupération d'une valeur");
 	Test(An_Valeur(An_Creer_Feuille('a')) = 'a');
 
@@ -78,9 +80,10 @@ begin
 	exception
 		when ARBRE_VIDE => Test(true);
 	end;
-	-- Fin Test An_Valeur
 	
-	-- Test An_Pere
+  ------------------
+	-- Test An_Pere --
+  ------------------
 	Put("Exception lors de la récupération du père sur un arbre vide");
 	begin
 		arbre1 := An_Pere(An_Creer_Vide);
@@ -89,6 +92,7 @@ begin
 		when ARBRE_VIDE => Test(true);
 	end;
 
+  -- Test de l'exception PERE_ABSENT
 	Put("Exception lors de la récupération du père sur une racine");
 	begin
 		arbre1 := An_Pere(An_Creer_Feuille('a'));
@@ -96,10 +100,10 @@ begin
 	exception
 		when PERE_ABSENT => Test(true);
 	end;
-	-- Fin Test An_Pere
 	
-	
-	-- Test An_Changer_Valeur
+  ----------------------------
+	-- Test An_Changer_Valeur --
+  ----------------------------
 	Put("Modification d'une valeur");
 	arbre1 := An_Creer_Feuille('a');
 	An_Changer_Valeur(arbre1, 'b');
@@ -113,9 +117,10 @@ begin
 	exception
 		when ARBRE_VIDE => Test(true);
 	end;
-	-- Fin Test An_Changer_Valeur
 	
-	-- Test An_Inserer_Fils et An_Pere
+	-------------------------------------
+	-- Test An_Inserer_Fils et An_Pere --
+  -------------------------------------
 	Put("Insertion d'un fils");
 	arbre1 := An_Creer_Feuille('a');
 	arbre2 := An_Creer_Feuille('b');
@@ -143,9 +148,10 @@ begin
 	exception
 		when ARBRE_VIDE => Test(true);
 	end;
-	-- Fin Test An_Inserer_Fils
 
-	-- Test An_Inserer_Frere
+  ---------------------------
+  -- Test An_Inserer_Frere --
+  ---------------------------
 	Put("Insertion d'un frère");
 	arbre1 := An_Creer_Feuille('a');
 	arbre2 := An_Creer_Feuille('b');
@@ -176,9 +182,10 @@ begin
 	exception
 		when ARBRE_VIDE => Test(true);
 	end;
-	-- Fin Test An_Inserer_Frere
 	
-	-- Test An_Afficher
+  ----------------------
+	-- Test An_Afficher --
+  ----------------------
 	Put_line("Affichage d'un arbre :");
 	arbre1 := An_Creer_Feuille('a');
 	arbre2 := An_Creer_Feuille('b');
@@ -199,9 +206,10 @@ begin
 	exception
 		when ARBRE_VIDE => Test(true);
 	end;
-	-- Fin Test An_Afficher
 	
-	-- Test An_Rechercher
+  ------------------------
+	-- Test An_Rechercher --
+  ------------------------
 	Put("Recherche dans un frère");
 	Test(An_Rechercher(Arbre_Test, 'd') /= An_Creer_Vide and then An_Valeur(An_Rechercher(Arbre_Test, 'd')) = 'd');
 
@@ -210,10 +218,10 @@ begin
 
 	Put("Recherche infructueuse");
 	Test(An_Rechercher(Arbre_Test, 'z') = An_Creer_Vide);
-	-- Fin Test An_Rechercher
 	
-	
-	-- Test An_Est_Feuille
+  -------------------------	
+	-- Test An_Est_Feuille --
+  -------------------------
 	Put("Test si un arbre est une feuille");
 	Test(An_Est_Feuille(An_Rechercher(Arbre_Test, 'b')) and An_Est_Feuille(An_Rechercher(Arbre_Test, 'd')) and not(An_Est_Feuille(Arbre_Test)));
 
@@ -225,10 +233,10 @@ begin
 	exception
 		when ARBRE_VIDE => Test(true);
 	end;
-	-- Fin Test An_Est_Feuille
 	
-
-	-- Test An_Est_Racine
+  ------------------------
+	-- Test An_Est_Racine --
+  ------------------------
 	Put("Test si un arbre est racine");
 	Test(An_Est_Racine(Arbre_Test) and not(An_Est_Racine(An_Rechercher(Arbre_Test, 'b'))) and not(An_Est_Racine(An_Rechercher(Arbre_Test, 'd'))));
 
@@ -240,10 +248,10 @@ begin
 	exception
 		when ARBRE_VIDE => Test(true);
 	end;
-	-- Fin Test An_Est_Racine
 
-	
-	-- Test An_Supprimer_Fils
+  ----------------------------	
+	-- Test An_Supprimer_Fils --
+  ----------------------------
 	Put("Test suppression du premier fils");
 	arbre1 := Arbre_Test;
 	An_Supprimer_Fils(arbre1, 1);
@@ -282,10 +290,10 @@ begin
 	exception
 		when FILS_ABSENT => Test(true);
 	end;
-	-- Fin Test An_Supprimer_Fils
-	
 
-	-- Test An_Supprimer_Frere
+  -----------------------------
+	-- Test An_Supprimer_Frere --
+  -----------------------------
 	Put("Suppression du premier frère");
 	arbre1 := An_Rechercher(Arbre_Test, 'b');
 	An_Supprimer_Frere(arbre1, 1);
@@ -315,6 +323,5 @@ begin
 	exception
 		when FRERE_ABSENT => Test(true);
 	end;
-	-- Fin Test An_Supprimer_Frere
 	
 end p_arbren_test;
