@@ -1,0 +1,106 @@
+
+Ajouter :
+=========
+
+Fait l'addition de deux polynômes
+
+Paramètres : p1 : polynome (D)
+             p2 : polynome (D)
+Type retour : polynome
+Précondition : /
+Postcondition : la sortie vaut p1 + p2
+
+structure de contrôle : If
+  - Si les deux arbres sont vides
+      Retourner l'arbre vide
+  - Si l'un des deux arbres est vide
+      Retourner une copie du second
+  - Sinon
+      - Si les deux arbres sont des constantes
+          SP1. Retourner la somme
+      - Si p1 est une constante
+          SP2. Ajouter p1 dans le fils de puissance 0 de p2
+      - Si p2 est une constante
+          SP2. Ajouter p2 dans le fils de puissance 0 de p1
+      - Sinon
+          - Si la variable est la même
+              SP3. Ajouter les fils un à un
+          - Si p1 a la variable la plus grande (ordre alphabétique) à la racine
+              SP2. Ajouter p1 dans le fils de puissance 0 de p2
+          - Sinon
+              SP2. Ajouter p2 dans le fils de puissance 0 de p1
+
+SP1. Retourner la somme :
+=========================
+
+structure de contrôle : If
+  - Si la somme fait 0
+      Retourner l'arbre vide
+  - Sinon
+      Retourner une feuille, dont :
+        - la puissance est la puissance de la première constante (la puissance des 2 constantes est identique)
+        - la variable vaut ' '
+        - la constante vaut la somme
+
+SP2. Ajouter p2 dans le fils de puissance 0 de p1 :
+===================================================
+
+structure de contrôle : séquence
+  - Copier p2, en mettant la puissance à 0
+  - Si p1 a un fils de puissance 0
+      - Ajouter la copie de p2 avec ce fils
+      - Si le resultat est l'arbre vide, et qu'il n'y a pas d'autre fils
+          Retourner l'arbre vide
+      - Sinon
+          Retourner l'arbre dont :
+            - la racine est la racine de p1
+            - le premier fils est la somme précédemment calculée
+            - les autres fils sont une copie des autres fils de p1
+  - Sinon
+      Retourner l'arbre dont :
+        - la racine est la racine de p1
+        - le premier fils est la copie de p2
+        - les autres fils sont une copie des autres fils de p1
+
+SP3. Ajouter les fils un à un :
+=============================== 
+
+structure de contrôle : séquence
+  - Copier la racine dans resultat
+  - SP4.1 Parcourir les fils
+  - Si resultat n'a aucun fils
+      Retourner l'arbre vide
+  - Sinon
+      Retourner resultat
+
+SP4.1 Parcourir les fils :
+==========================
+
+structure de contrôle : séquence
+  - Initialiser 2 pointeurs sp1 et sp2 vers les premiers fils
+  - structure de contrôle : repeter jusqu'a ce que sp1 ou sp2 soit l'arbre vide
+      - Si sp1 et sp2 ont la même puissance
+          - Ajouter sp1 et sp2
+          - Si la somme n'est pas vide
+              Ajouter la somme en dernier fils de resultat
+          - Si sp1 a un frère
+              Assigner le premier frère de sp1 à sp1
+          - Sinon
+              Assigner l'arbre vide à sp1
+          - Si sp2 a un frère
+              Assigner le premier frère de sp2 à sp2
+          - Sinon
+              Assigner l'arbre vide à sp2
+      - Sinon, la puissance de sp1 est plus petite que sp2
+          - Copier sp1 et l'Ajouter en dernier fils de resultat
+          - Si sp1 a un frère
+              Assigner le premier frère de sp1 à sp1
+          - Sinon
+              Assigner l'arbre vide à sp1
+      - Sinon
+          Idem précédent
+  - si sp1 n'est pas l'arbre vide
+      Copier sp1 et l'Ajouter en dernier fils de resultat
+  - si sp2 n'est pas l'arbre vide
+      Copier sp2 et l'Ajouter en dernier fils de resultat
+ 

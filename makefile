@@ -1,4 +1,7 @@
-all : p_arbren.o p_arbre_poly.o
+all : p_arbren.o p_arbre_poly.o p_polynome.o
+
+p_polynome.o : p_arbre_poly.o p_polynome.ads p_polynome.adb
+	gnatmake p_polynome.adb
 
 p_arbre_poly.o : p_arbre_poly.ads p_arbre_poly.adb
 	gnatmake p_arbre_poly.adb
