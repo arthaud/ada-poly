@@ -279,66 +279,85 @@ package body p_arbre_poly is
     end if;
   end Ap_Inserer_Frere;
 
-  -- Procédure Ap_Supprimer_Fils
-  -- Sémantique : Supprimer le nième fils d'un arbre
+  -- Procédure Ap_Inserer_Dernier_Fils
+  -- Sémantique : Insérer un arbre en position de dernier fils d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
-  --              n : integer (D)
-  -- Précondition : n >= 1
-  -- Postcondition : Le nième fils est supprimé. Les fils n+i+1 deviennent les fils n+i (i>=0).
-  -- Exception : ARBRE_VIDE, FILS_ABSENT
-  procedure Ap_Supprimer_Fils(a : in out arbre_poly; n : in integer) is
+  --              a_ins : arbre_poly (D/R)
+  -- Précondition : /
+  -- Postcondition : a_ins est inséré en position de dernier fils de a
+  -- Exception : ARBRE_VIDE
+  procedure Ap_Inserer_Dernier_Fils(a : in out arbre_poly; a_ins : in out arbre_poly) is
   begin
-    if a = Null then -- arbre vide
+    if a = Null or a_ins = Null then -- arbre vide
       raise ARBRE_VIDE;
     elsif a.all.fils = Null then -- arbre sans fils
-      raise FILS_ABSENT;
-    elsif n = 1 then -- n=1
-      a.all.fils := a.all.fils.all.frere;
+      a_ins.all.pere := a;
+      a.all.fils := a_ins;
     else
-      begin
-        -- Supprime le (n-1)ième frère du premier fils
-        Ap_Supprimer_Frere(a.all.fils, n-1);
-      exception
-        when FRERE_ABSENT => raise FILS_ABSENT;
-      end;
+      -- Insérer a_ins en dernier frère du premier fils
+      Ap_Inserer_Dernier_Frere(a.all.fils, a_ins);
     end if;
-  end Ap_Supprimer_Fils;
+  end Ap_Inserer_Dernier_Fils;
 
-  -- Procédure Ap_Supprimer_Frere
-  -- Sémantique : Supprimer le nième frère d'un arbre
+  -- Procédure Ap_Inserer_Dernier_Frere
+  -- Sémantique : Insérer un arbre en position de dernier frère d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
-  --              n : integer (D)
-  -- Précondition : n >= 1
-  -- Postcondition : Le nième frère est supprimé. Les frères n+i+1 deviennent les frères n+i (i>=0).
-  -- Exception : ARBRE_VIDE, FRERE_ABSENT
-  procedure Ap_Supprimer_Frere(a : in out arbre_poly; n : in integer) is
+  --              a_ins : arbre_poly (D/R)
+  -- Précondition : /
+  -- Postcondition : a_ins est inséré en position de dernier frère de a
+  -- Exception : ARBRE_VIDE
+  procedure Ap_Inserer_Dernier_Frere(a : in out arbre_poly; a_ins : in out arbre_poly) is
     temp : arbre_poly;
-    p : integer;
   begin
-    if a = Null then -- arbre vide
+    if a = Null or a_ins = Null then -- arbre vide
       raise ARBRE_VIDE;
     else
-      -- Parcours des frères
-      
       -- Initialisation
       temp := a;
-      p := 1;
 
-      -- Parcours
-      while temp.all.frere /= Null and p < n loop
+      while temp.all.frere /= Null loop -- arret lors du dernier frère
         temp := temp.all.frere;
-        p := p+1;
       end loop;
 
-      -- Fin de Parcours des frères
-
-      -- Supprimer le nième frère s'il existe, sinon lever une exception
-      if p=n and temp.all.frere /= Null then
-        temp.all.frere := temp.all.frere.all.frere;
-      else
-        raise FRERE_ABSENT;
-      end if;
+      -- Insertion sur le dernier frère
+      a_ins.all.pere := a.all.pere;
+      temp.all.frere := a_ins;
     end if;
-  end Ap_Supprimer_Frere;
+  end Ap_Inserer_Dernier_Frere;
+
+  -- Fonction Ap_Copier
+  -- Sémantique : Copier un arbre
+  -- Paramètres : a : arbre_poly (D)
+  -- Type retour : arbre_poly
+  -- Précondition : /
+  -- Postcondition : a est copié
+  -- Exception : /
+  function Ap_Copier(a : in arbre_poly) return arbre_poly is
+    resultat : arbre_poly;
+    fils : arbre_poly;
+    frere : arbre_poly;
+  begin
+    if a = Null then -- arbre vide
+      return Null;
+    else
+      -- copie de la racine
+      resultat := Ap_Creer_Feuille(Ap_Valeur(a));
+
+      -- copie des frères
+      if a.all.frere /= Null then
+        frere := Ap_Copier(a.all.frere);
+        resultat.all.frere := frere;
+      end if;
+
+      -- copie des fils
+      if a.all.fils /= Null then
+        fils := Ap_Copier(a.all.fils);
+        resultat.all.fils := fils;
+        fils.all.pere := resultat;
+      end if;
+
+      return resultat;
+    end if;
+  end Ap_Copier;
 
 end p_arbre_poly;

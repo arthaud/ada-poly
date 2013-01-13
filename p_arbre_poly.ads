@@ -154,23 +154,32 @@ package p_arbre_poly is
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Frere(a : in out arbre_poly; a_ins : in out arbre_poly);
 
-  -- Procédure Ap_Supprimer_Fils
-  -- Sémantique : Supprimer le nième fils d'un arbre
+  -- Procédure Ap_Inserer_Dernier_Fils
+  -- Sémantique : Insérer un arbre en position de dernier fils d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
-  --              n : integer (D)
-  -- Précondition : n >= 1
-  -- Postcondition : Le nième fils est supprimé. Les fils n+i+1 deviennent les fils n+i (i>=0).
-  -- Exception : ARBRE_VIDE, FILS_ABSENT
-  procedure Ap_Supprimer_Fils(a : in out arbre_poly; n : in integer);
+  --              a_ins : arbre_poly (D/R)
+  -- Précondition : /
+  -- Postcondition : a_ins est inséré en position de dernier fils de a
+  -- Exception : ARBRE_VIDE
+  procedure Ap_Inserer_Dernier_Fils(a : in out arbre_poly; a_ins : in out arbre_poly);
 
-  -- Procédure Ap_Supprimer_Frere
-  -- Sémantique : Supprimer le nième frère d'un arbre
+  -- Procédure Ap_Inserer_Dernier_Frere
+  -- Sémantique : Insérer un arbre en position de dernier frère d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
-  --              n : integer (D)
-  -- Précondition : n >= 1
-  -- Postcondition : Le nième frère est supprimé. Les frères n+i+1 deviennent les frères n+i (i>=0).
-  -- Exception : ARBRE_VIDE, FRERE_ABSENT
-  procedure Ap_Supprimer_Frere(a : in out arbre_poly; n : in integer);
+  --              a_ins : arbre_poly (D/R)
+  -- Précondition : /
+  -- Postcondition : a_ins est inséré en position de dernier frère de a
+  -- Exception : ARBRE_VIDE
+  procedure Ap_Inserer_Dernier_Frere(a : in out arbre_poly; a_ins : in out arbre_poly);
+
+  -- Fonction Ap_Copier
+  -- Sémantique : Copier un arbre
+  -- Paramètres : a : arbre_poly (D)
+  -- Type retour : arbre_poly
+  -- Précondition : /
+  -- Postcondition : a est copié
+  -- Exception : /
+  function Ap_Copier(a : in arbre_poly) return arbre_poly;
 
   private
     type arbre_poly_contenu;

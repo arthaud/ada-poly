@@ -69,11 +69,11 @@ begin
   --------------------
 	-- Test An_Valeur --
   --------------------
-	Put("Récupération d'une valeur");
+	Put("Récupération de la valeur");
 	Test(An_Valeur(An_Creer_Feuille('a')) = 'a');
 
 	-- Test de l'exception ARBRE_VIDE
-	Put("Exception lors d'une récupération sur un arbre vide");
+	Put("Exception lors de la récupération sur un arbre vide");
 	begin
 		v := An_Valeur(An_Creer_Vide);
 		Test(false);
