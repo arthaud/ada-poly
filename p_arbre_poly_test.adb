@@ -103,6 +103,6 @@ begin
   ----------------------------
   Put("Suppression d'un fils");
   Ap_Supprimer_Fils(arbre, 1);
-  Test(not(Ap_Fils_Existe(arbre)));
+  Test(Ap_Est_Feuille(arbre));
 
 end p_arbre_poly_test;
