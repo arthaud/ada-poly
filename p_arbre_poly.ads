@@ -155,22 +155,20 @@ package p_arbre_poly is
   procedure Ap_Inserer_Frere(a : in out arbre_poly; a_ins : in out arbre_poly);
 
   -- Procédure Ap_Inserer_Dernier_Fils
-  -- Sémantique : Insérer un arbre en position de dernier fils d'un arbre a
+  -- Sémantique : Insérer un arbre sans frère en position de dernier fils d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
   --              a_ins : arbre_poly (D/R)
-  -- Précondition : /
+  -- Précondition : a_ins n'a pas de frère
   -- Postcondition : a_ins est inséré en position de dernier fils de a
-  --   si a_ins a des frères, ils deviendront aussi des fils de a
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Dernier_Fils(a : in out arbre_poly; a_ins : in out arbre_poly);
 
   -- Procédure Ap_Inserer_Dernier_Frere
-  -- Sémantique : Insérer un arbre en position de dernier frère d'un arbre a
+  -- Sémantique : Insérer un arbre sans frère en position de dernier frère d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
   --              a_ins : arbre_poly (D/R)
-  -- Précondition : /
+  -- Précondition : a_ins n'a pas de frère
   -- Postcondition : a_ins est inséré en position de dernier frère de a
-  --   si a_ins a des frères, ils deviendront aussi de frères de a
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Dernier_Frere(a : in out arbre_poly; a_ins : in out arbre_poly);
 
@@ -182,6 +180,15 @@ package p_arbre_poly is
   -- Postcondition : a est copié
   -- Exception : /
   function Ap_Copier(a : in arbre_poly) return arbre_poly;
+
+  -- Fonction Ap_Copier_Sans_Frere
+  -- Sémantique : Copier un arbre, sauf les frères de la racine
+  -- Paramètres : a : arbre_poly (D)
+  -- Type retour : arbre_poly
+  -- Précondition : /
+  -- Postcondition : a est copié, sauf les frères de sa racine
+  -- Exception : /
+  function Ap_Copier_Sans_Frere(a : in arbre_poly) return arbre_poly;
 
   private
     type arbre_poly_contenu;

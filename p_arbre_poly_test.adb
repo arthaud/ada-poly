@@ -331,6 +331,13 @@ begin
   --------------------
   Put("Copie d'un arbre");
   temp := Ap_Copier(arbre);
-  Test(temp /= arbre and Ap_Valeur(temp).var = 'Y' and Ap_Valeur(Ap_Fils(temp)).const = 1 and Ap_Frere_Existe(Ap_Fils(temp))); 
+  Test(temp /= arbre and Ap_Valeur(temp).var = 'Y' and Ap_Valeur(Ap_Fils(temp)).const = 1 and Ap_Pere(Ap_Frere(Ap_Fils(temp))) = temp); 
+
+  -------------------------------
+  -- Test Ap_Copier_Sans_Frere --
+  -------------------------------
+  Put("Copie d'un arbre sans les frères de la racine");
+  temp := Ap_Copier_Sans_Frere(Ap_Fils(arbre));
+  Test(temp /= Ap_Fils(arbre) and Ap_Valeur(temp).var = ' ' and Ap_Valeur(temp).const = 1 and not(Ap_Frere_Existe(temp)));
 
 end p_arbre_poly_test;

@@ -2,11 +2,11 @@
 Ap_Inserer_Dernier_Fils :
 =========================
 
-Insérer un arbre en position de dernier fils d'un arbre a
+Insérer un arbre sans frère en position de dernier fils d'un arbre a
 
 Paramètres : a : arbre_poly (D/R)
              a_ins : arbre_poly (D/R)
-Précondition : /
+Précondition : a_ins n'a pas de frère
 Postcondition : a_ins est inséré en position de dernier fils de a
 Exception : ARBRE_VIDE
 
@@ -22,11 +22,11 @@ structure de contrôle : If
 Ap_Inserer_Dernier_Frere :
 ==========================
 
-Insérer un arbre en position de dernier frère d'un arbre a
+Insérer un arbre sans frère en position de dernier frère d'un arbre a
 
 Paramètres : a : arbre_poly (D/R)
              a_ins : arbre_poly (D/R)
-Précondition : /
+Précondition : a_ins n'a pas de frère
 Postcondition : a_ins est inséré en position de dernier frère de a
 Exception : ARBRE_VIDE
 
@@ -55,7 +55,32 @@ structure de contrôle : If
     Retourner l'arbre vide
   Sinon
     Copier la racine de a
-    Si a a des frères, copier les frères de a et les ajouter à la racine
-    Si a a des fils, copier les fils de a et les ajouter à la racine
+    Si a a des frères
+      Copier les frères de a et les ajouter à la racine
+    Si a a des fils
+      Copier les fils de a et les ajouter à la racine
+      Mettre à jour le père des fils
+    Retourner la copie
+
+
+Ap_Copier_Sans_Frere :
+======================
+
+Copier un arbre, sauf les frères de la racine
+
+Paramètres : a : arbre_poly (D)
+Type retour : arbre_poly
+Précondition : /
+Postcondition : a est copié, sauf les frères de sa racine
+Exception : /
+
+structure de contrôle : If
+  Si a est l'arbre vide
+    Retourner l'arbre vide
+  Sinon
+    Copier la racine de a
+    Si a a des fils
+      Copier les fils de a et les ajouter à la racine
+      Mettre à jour le père des fils
     Retourner la copie
 

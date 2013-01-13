@@ -280,12 +280,11 @@ package body p_arbre_poly is
   end Ap_Inserer_Frere;
 
   -- Procédure Ap_Inserer_Dernier_Fils
-  -- Sémantique : Insérer un arbre en position de dernier fils d'un arbre a
+  -- Sémantique : Insérer un arbre sans frère en position de dernier fils d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
   --              a_ins : arbre_poly (D/R)
-  -- Précondition : /
+  -- Précondition : a_ins n'a pas de frère
   -- Postcondition : a_ins est inséré en position de dernier fils de a
-  --   si a_ins a des frères, ils deviendront aussi des fils de a
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Dernier_Fils(a : in out arbre_poly; a_ins : in out arbre_poly) is
   begin
@@ -293,6 +292,7 @@ package body p_arbre_poly is
       raise ARBRE_VIDE;
     elsif a.all.fils = Null then -- arbre sans fils
       a_ins.all.pere := a;
+      a_ins.all.frere := Null;
       a.all.fils := a_ins;
     else
       -- Insérer a_ins en dernier frère du premier fils
@@ -301,12 +301,11 @@ package body p_arbre_poly is
   end Ap_Inserer_Dernier_Fils;
 
   -- Procédure Ap_Inserer_Dernier_Frere
-  -- Sémantique : Insérer un arbre en position de dernier frère d'un arbre a
+  -- Sémantique : Insérer un arbre sans frère en position de dernier frère d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
   --              a_ins : arbre_poly (D/R)
-  -- Précondition : /
+  -- Précondition : a_ins n'a pas de frère
   -- Postcondition : a_ins est inséré en position de dernier frère de a
-  --   si a_ins a des frères, ils deviendront aussi des frères de a
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Dernier_Frere(a : in out arbre_poly; a_ins : in out arbre_poly) is
     temp : arbre_poly;
@@ -323,6 +322,7 @@ package body p_arbre_poly is
 
       -- Insertion sur le dernier frère
       a_ins.all.pere := a.all.pere;
+      a_ins.all.frere := Null;
       temp.all.frere := a_ins;
     end if;
   end Ap_Inserer_Dernier_Frere;
@@ -336,8 +336,45 @@ package body p_arbre_poly is
   -- Exception : /
   function Ap_Copier(a : in arbre_poly) return arbre_poly is
     resultat : arbre_poly;
-    fils : arbre_poly;
-    frere : arbre_poly;
+    temp : arbre_poly;
+  begin
+    if a = Null then -- arbre vide
+      return Null;
+    else
+      -- copie de la racine
+      resultat := Ap_Creer_Feuille(a.all.valeur);
+
+      -- copie des frères
+      if a.all.frere /= Null then
+        resultat.all.frere := Ap_Copier(a.all.frere);
+      end if;
+
+      -- copie des fils
+      if a.all.fils /= Null then
+        resultat.all.fils := Ap_Copier(a.all.fils);
+
+        -- mettre à jour le père
+        temp := resultat.all.fils;
+        while temp /= Null loop
+          temp.all.pere := resultat;
+          temp := temp.all.frere;
+        end loop;
+      end if;
+
+      return resultat;
+    end if;
+  end Ap_Copier;
+
+  -- Fonction Ap_Copier_Sans_Frere
+  -- Sémantique : Copier un arbre, sauf les frères de la racine
+  -- Paramètres : a : arbre_poly (D)
+  -- Type retour : arbre_poly
+  -- Précondition : /
+  -- Postcondition : a est copié, sauf les frères de sa racine
+  -- Exception : /
+  function Ap_Copier_Sans_Frere(a : in arbre_poly) return arbre_poly is
+    resultat : arbre_poly;
+    temp : arbre_poly;
   begin
     if a = Null then -- arbre vide
       return Null;
@@ -345,21 +382,20 @@ package body p_arbre_poly is
       -- copie de la racine
       resultat := Ap_Creer_Feuille(Ap_Valeur(a));
 
-      -- copie des frères
-      if a.all.frere /= Null then
-        frere := Ap_Copier(a.all.frere);
-        resultat.all.frere := frere;
-      end if;
-
       -- copie des fils
       if a.all.fils /= Null then
-        fils := Ap_Copier(a.all.fils);
-        resultat.all.fils := fils;
-        fils.all.pere := resultat;
+        resultat.all.fils := Ap_Copier(a.all.fils);
+
+        -- mettre à jour le père
+        temp := resultat.all.fils;
+        while temp /= Null loop
+          temp.all.pere := resultat;
+          temp := temp.all.frere;
+        end loop;
       end if;
 
       return resultat;
     end if;
-  end Ap_Copier;
+  end Ap_Copier_Sans_Frere;
 
 end p_arbre_poly;
