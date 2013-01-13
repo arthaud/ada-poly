@@ -160,6 +160,7 @@ package p_arbre_poly is
   --              a_ins : arbre_poly (D/R)
   -- Précondition : /
   -- Postcondition : a_ins est inséré en position de dernier fils de a
+  --   si a_ins a des frères, ils deviendront aussi des fils de a
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Dernier_Fils(a : in out arbre_poly; a_ins : in out arbre_poly);
 
@@ -169,6 +170,7 @@ package p_arbre_poly is
   --              a_ins : arbre_poly (D/R)
   -- Précondition : /
   -- Postcondition : a_ins est inséré en position de dernier frère de a
+  --   si a_ins a des frères, ils deviendront aussi de frères de a
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Dernier_Frere(a : in out arbre_poly; a_ins : in out arbre_poly);
 
