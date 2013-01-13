@@ -266,7 +266,7 @@ begin
 	Put("Exception lors de la suppression sur un arbre vide");
 	begin
 		a_vide := An_Creer_Vide;
-	   	An_Supprimer_Fils(a_vide, 1);
+	  An_Supprimer_Fils(a_vide, 1);
 		Test(false);
 	exception
 		when ARBRE_VIDE => Test(true);

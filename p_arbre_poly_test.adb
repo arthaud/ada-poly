@@ -340,4 +340,77 @@ begin
   temp := Ap_Copier_Sans_Frere(Ap_Fils(arbre));
   Test(temp /= Ap_Fils(arbre) and Ap_Valeur(temp).var = ' ' and Ap_Valeur(temp).const = 1 and not(Ap_Frere_Existe(temp)));
 
+  ----------------------------
+  -- Test Ap_Supprimer_Fils --
+  ----------------------------
+  Put("Test suppression du premier fils");
+  temp := Ap_Copier(arbre);
+  Ap_Supprimer_Fils(temp, 1);
+  Test(Ap_Valeur(Ap_Fils(temp)).puiss = 1 and Ap_Valeur(Ap_Frere(Ap_Fils(temp))).puiss = 4);
+
+  Put("Test suppression d'un fils quelconque");
+  temp := Ap_Copier(arbre);
+  Ap_Supprimer_Fils(temp, 2);
+  Test(Ap_Valeur(Ap_Fils(temp)).puiss = 0 and Ap_Valeur(Ap_Frere(Ap_Fils(temp))).puiss = 4);
+
+  -- Test de l'exception ARBRE_VIDE
+  Put("Exception lors de la suppression sur un arbre vide");
+  begin
+    Ap_Supprimer_Fils(a_vide, 1);
+    Test(false);
+  exception
+    when ARBRE_VIDE => Test(true);
+  end;
+
+  -- Test de l'exception FILS_ABSENT
+  Put("Exception lors de la suppression d'un fils inexistant, cas où il n'y a aucun fils");
+  begin
+    temp := Ap_Creer_Feuille(n);
+    Ap_Supprimer_Fils(temp, 1);
+    Test(false);
+  exception
+    when FILS_ABSENT => Test(true);
+  end;
+
+  Put("Exception lors de la suppression d'un fils inexistant, cas où il y a au moins un fils");
+  begin
+    temp := Ap_Copier(arbre);
+    Ap_Supprimer_Fils(temp, 5);
+    Test(false);
+  exception
+    when FILS_ABSENT => Test(true);
+  end;
+
+  -----------------------------
+  -- Test Ap_Supprimer_Frere --
+  -----------------------------
+  Put("Suppression du premier frère");
+  temp := Ap_Copier(Ap_Fils(arbre));
+  Ap_Supprimer_Frere(temp, 1);
+  Test(Ap_Valeur(temp).puiss = 0 and Ap_Valeur(Ap_Frere(temp)).puiss = 4);
+
+  Put("Suppression d'un frère quelconque");
+  temp := Ap_Copier(Ap_Fils(arbre));
+  Ap_Supprimer_Frere(temp, 2);
+  Test(Ap_Valeur(temp).puiss = 0 and Ap_Valeur(Ap_Frere(temp)).puiss = 1 and Ap_Valeur(Ap_Frere(Ap_Frere(temp))).puiss = 5);
+
+  -- Test de l'exception ARBRE_VIDE
+  Put("Exception lors de la suppression sur un arbre vide");
+  begin
+    Ap_Supprimer_Frere(a_vide, 1);
+    Test(false);
+  exception
+    when ARBRE_VIDE => Test(true);
+  end;
+
+  -- Test de l'exception FILS_ABSENT
+  Put("Exception lors de la suppression d'un frère inexistant");
+  begin
+    temp := Ap_Copier(Ap_Fils(arbre));
+    Ap_Supprimer_Frere(temp, 5);
+    Test(false);
+  exception
+    when FRERE_ABSENT => Test(true);
+  end;
+
 end p_arbre_poly_test;

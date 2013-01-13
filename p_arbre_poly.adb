@@ -327,6 +327,68 @@ package body p_arbre_poly is
     end if;
   end Ap_Inserer_Dernier_Frere;
 
+  -- Procédure Ap_Supprimer_Fils
+  -- Sémantique : Supprimer le nième fils d'un arbre
+  -- Paramètres : a : arbre_poly (D/R)
+  --              n : integer (D)
+  -- Précondition : n >= 1
+  -- Postcondition : Le nième fils est supprimé. Les fils n+i+1 deviennent les fils n+i (i>=0).
+  -- Exception : ARBRE_VIDE, FILS_ABSENT
+  procedure Ap_Supprimer_Fils(a : in out arbre_poly; n : in integer) is
+  begin
+    if a = Null then -- arbre vide
+      raise ARBRE_VIDE;
+    elsif a.all.fils = Null then -- arbre sans fils
+      raise FILS_ABSENT;
+    elsif n = 1 then -- n=1
+      a.all.fils := a.all.fils.all.frere;
+    else
+      begin
+        -- Supprime le (n-1)ième frère du premier fils
+        Ap_Supprimer_Frere(a.all.fils, n-1);
+      exception
+        when FRERE_ABSENT => raise FILS_ABSENT;
+      end;
+    end if;
+  end Ap_Supprimer_Fils;
+
+  -- Procédure Ap_Supprimer_Frere
+  -- Sémantique : Supprimer le nième frère d'un arbre
+  -- Paramètres : a : arbre_poly (D/R)
+  --              n : integer (D)
+  -- Précondition : n >= 1
+  -- Postcondition : Le nième frère est supprimé. Les frères n+i+1 deviennent les frères n+i (i>=0).
+  -- Exception : ARBRE_VIDE, FRERE_ABSENT
+  procedure Ap_Supprimer_Frere(a : in out arbre_poly; n : in integer) is
+    temp : arbre_poly;
+    p : integer;
+  begin
+    if a = Null then -- arbre vide
+      raise ARBRE_VIDE;
+    else
+      -- Parcours des frères
+
+      -- Initialisation
+      temp := a;
+      p := 1;
+
+      -- Parcours
+      while temp.all.frere /= Null and p < n loop
+        temp := temp.all.frere;
+        p := p+1;
+      end loop;
+
+      -- Fin de Parcours des frères
+
+      -- Supprimer le nième frère s'il existe, sinon lever une exception
+      if p=n and temp.all.frere /= Null then
+        temp.all.frere := temp.all.frere.all.frere;	
+      else
+        raise FRERE_ABSENT;
+      end if;
+    end if;
+  end Ap_Supprimer_Frere;
+
   -- Fonction Ap_Copier
   -- Sémantique : Copier un arbre
   -- Paramètres : a : arbre_poly (D)
