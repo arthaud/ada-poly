@@ -103,4 +103,50 @@ structure de contrôle : séquence
       Copier sp1 et l'Ajouter en dernier fils de resultat
   - si sp2 n'est pas l'arbre vide
       Copier sp2 et l'Ajouter en dernier fils de resultat
- 
+
+
+Decoder : 
+=========
+
+Prend un polynôme et retourne la chaine de caractères correspondante
+
+Paramètres : p : polynome (D)
+Précondition : /
+Postcondition : le polynôme retourné est p
+Exception : LONGUEUR_MAX
+
+structure de contrôle : séquence
+  - Initialiser le resultat (longueur = 0)
+  - SP1. Parcourir chaque constante
+
+SP1. Parcourir chaque constante :
+===============================
+
+structure de contrôle : If
+  - Si le noeud courant est une constante
+      SP2. Ecrire le monome correspondant
+  - Sinon
+      Parcourir les fils
+  - Si le noeud a des frères
+      Parcourir les frères
+
+SP2. Ecrire le monome correspondant :
+=====================================
+
+structure de contrôle : séquence
+  - Ecrire le signe
+  - Ecrire la constante
+  - SP3. Parcourir les pères
+
+SP3. Parcourir les pères :
+==========================
+
+structure de contrôle : If
+  - Si la puissance n'est pas nulle
+      - Calculer la place nécéssaire à l'écriture de la variable
+      - Si le resultat n'a pas assez de place pour l'écrire
+          Lever l'excepion LONGUEUR_MAX
+      - Sinon
+          - Décaler les caractères après la constante de ce nombre de caractère
+          - Ecrire la variable a la position fin_constante
+  - SP3. Parcourir les pères

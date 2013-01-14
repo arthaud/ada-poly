@@ -7,21 +7,31 @@ package p_polynome is
 
   type polynome is private;
 
+  CMAX : constant integer := 100;
+  
+  type str is record
+    valeur : string(1..CMAX);
+    longueur : integer;
+  end record;
+
+  LONGUEUR_MAX : exception;
+
   -- Fonction Encoder
   -- Sémantique : Prend un polynôme sous forme de chaine de caractères, et retourne un polynôme
-  -- Paramètres : p : string (D)
+  -- Paramètres : p : str (D)
   -- Type retour : polynome
   -- Précondition : p vérifie les contraintes du sujet
   -- Postcondition : le polynôme retourné est p
-  -- function Encoder(p : in string) return polynome;
+  -- function Encoder(p : in str) return polynome;
 
   -- Fonction Decoder
   -- Sémantique : Prend un polynôme et retourne la chaine de caractères correspondante
   -- Paramètres : p : polynome (D)
-  -- Type retour : string
+  -- Type retour : str
   -- Précondition : /
-  -- Postcondition : le polynôme retourné est p
-  -- function Decoder(p : in polynome) return string;
+  -- Postcondition : la chaine de caractère vérifie les contraintes du sujet
+  -- Exception : LONGUEUR_MAX
+  function Decoder(p : in arbre_poly) return str;
 
   -- Fonction Ajouter
   -- Sémantique : Fait l'addition de deux polynomes
@@ -30,7 +40,7 @@ package p_polynome is
   -- Type retour : polynome
   -- Précondition : /
   -- Postcondition : la sortie vaut p1 + p2
-  function Ajouter(p1 : in polynome; p2 : in polynome) return polynome;
+  function Ajouter(p1 : in arbre_poly; p2 : in arbre_poly) return arbre_poly;
 
   private
     type polynome is new arbre_poly;
