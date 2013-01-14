@@ -70,8 +70,8 @@ package body p_polynome is
     else
       resultat.longueur := resultat.longueur + t;
 
-      for u in 1..t loop
-        resultat.valeur(resultat.longueur - u + 1) := Character'Val(Character'Pos('0') + (p mod 10));
+      for i in 1..t loop
+        resultat.valeur(resultat.longueur - i + 1) := Character'Val(Character'Pos('0') + (p mod 10));
         p := p / 10;
       end loop;
     end if;
