@@ -300,8 +300,8 @@ package body p_arbre_poly is
       -- modification du père de a et de ses frères
       temp := a.all.pere.all.fils; -- pour avoir le premier fils
       while temp /= Null loop
-	temp.all.pere := nouveau_pere;
-	temp := temp.all.frere;
+        temp.all.pere := nouveau_pere;
+        temp := temp.all.frere;
       end loop;
     end if;
   end Ap_Inserer_Pere;
@@ -442,8 +442,8 @@ package body p_arbre_poly is
       -- mettre à jour le père
       temp := resultat.all.fils;
       while temp /= Null loop
-	temp.all.pere := resultat;
-	temp := temp.all.frere;
+        temp.all.pere := resultat;
+        temp := temp.all.frere;
       end loop;
 
       return resultat;
@@ -473,8 +473,8 @@ package body p_arbre_poly is
       -- mettre à jour le père
       temp := resultat.all.fils;
       while temp /= Null loop
-	temp.all.pere := resultat;
-	temp := temp.all.frere;
+        temp.all.pere := resultat;
+        temp := temp.all.frere;
       end loop;
 
       return resultat;
