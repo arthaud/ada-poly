@@ -279,6 +279,33 @@ package body p_arbre_poly is
     end if;
   end Ap_Inserer_Frere;
 
+  -- Procédure Ap_Inserer_Pere
+  -- Sémantique : Insérer un noeud en père d'un arbre a
+  -- Paramètres : a : arbre_poly (D/R)
+  --              n : noeud (D)
+  -- Précondition : /
+  -- Postcondition : le pere de a est le noeud n. le pere de n est l'ancien pere de a.
+  -- Exception : ARBRE_VIDE
+  procedure Ap_Inserer_Pere(a : in out arbre_poly; n : in noeud) is
+    nouveau_pere : arbre_poly;
+    temp : arbre_poly;
+  begin
+    if a = Null then
+      raise ARBRE_VIDE;
+    else
+      -- création du père
+      nouveau_pere := Ap_Creer_Feuille(n);
+      nouveau_pere.all.pere := a.all.pere;
+
+      -- modification du père de a et de ses frères
+      temp := a.all.pere.all.fils; -- pour avoir le premier fils
+      while temp /= Null loop
+	temp.all.pere := nouveau_pere;
+	temp := temp.all.frere;
+      end loop;
+    end if;
+  end Ap_Inserer_Pere;
+
   -- Procédure Ap_Inserer_Dernier_Fils
   -- Sémantique : Insérer un arbre sans frère en position de dernier fils d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
@@ -407,21 +434,17 @@ package body p_arbre_poly is
       resultat := Ap_Creer_Feuille(a.all.valeur);
 
       -- copie des frères
-      if a.all.frere /= Null then
-        resultat.all.frere := Ap_Copier(a.all.frere);
-      end if;
+      resultat.all.frere := Ap_Copier(a.all.frere);
 
       -- copie des fils
-      if a.all.fils /= Null then
-        resultat.all.fils := Ap_Copier(a.all.fils);
+      resultat.all.fils := Ap_Copier(a.all.fils);
 
-        -- mettre à jour le père
-        temp := resultat.all.fils;
-        while temp /= Null loop
-          temp.all.pere := resultat;
-          temp := temp.all.frere;
-        end loop;
-      end if;
+      -- mettre à jour le père
+      temp := resultat.all.fils;
+      while temp /= Null loop
+	temp.all.pere := resultat;
+	temp := temp.all.frere;
+      end loop;
 
       return resultat;
     end if;
@@ -445,16 +468,14 @@ package body p_arbre_poly is
       resultat := Ap_Creer_Feuille(Ap_Valeur(a));
 
       -- copie des fils
-      if a.all.fils /= Null then
-        resultat.all.fils := Ap_Copier(a.all.fils);
+      resultat.all.fils := Ap_Copier(a.all.fils);
 
-        -- mettre à jour le père
-        temp := resultat.all.fils;
-        while temp /= Null loop
-          temp.all.pere := resultat;
-          temp := temp.all.frere;
-        end loop;
-      end if;
+      -- mettre à jour le père
+      temp := resultat.all.fils;
+      while temp /= Null loop
+	temp.all.pere := resultat;
+	temp := temp.all.frere;
+      end loop;
 
       return resultat;
     end if;

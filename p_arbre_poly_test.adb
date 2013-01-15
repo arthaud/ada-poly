@@ -26,6 +26,7 @@ procedure p_arbre_poly_test is
   fils3 : arbre_poly;
   fils4 : arbre_poly;
   temp : arbre_poly;
+  temp2 : arbre_poly;
   a_vide : arbre_poly;
 begin
 
@@ -265,6 +266,36 @@ begin
   ----------------------
   Put_line("Affichage d'un arbre :");
   Ap_Afficher(arbre);
+
+  --------------------------
+  -- Test Ap_Inserer_Pere --
+  --------------------------
+  Put("Insertion d'un père");
+  n.var := 'A';
+  temp := Ap_Creer_Feuille(n);
+  
+  n.var := 'B';
+  temp2 := Ap_Creer_Feuille(n);
+  Ap_Inserer_Fils(temp, temp2);
+
+  n.var := 'C';
+  temp2 := Ap_Creer_Feuille(n);
+  Ap_Inserer_Fils(temp, temp2);
+
+  n.var := 'D';
+  Ap_Inserer_Pere(temp2, n);
+  
+  Test(Ap_Valeur(temp2).var = 'C' and Ap_Valeur(Ap_Frere(temp2)).var = 'B' and Ap_Valeur(Ap_Pere(temp2)).var = 'D' and Ap_Valeur(Ap_Pere(Ap_Frere(temp2))).var = 'D' and Ap_Valeur(Ap_Pere(Ap_Pere(temp2))).var = 'A');
+
+  -- Test de l'exception ARBRE_VIDE
+  Put("Exception lors de l'insertion d'un père dans un arbre vide");
+  begin
+    temp := Ap_Creer_Vide;
+    Ap_Inserer_Pere(temp, n);
+    Test(false);
+  exception
+    when ARBRE_VIDE => Test(true);
+  end;
 
   ----------------------------------
   -- Test Ap_Inserer_Dernier_Fils --

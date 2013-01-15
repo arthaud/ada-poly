@@ -154,6 +154,15 @@ package p_arbre_poly is
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Frere(a : in out arbre_poly; a_ins : in out arbre_poly);
 
+  -- Procédure Ap_Inserer_Pere
+  -- Sémantique : Insérer un noeud en père d'un arbre a
+  -- Paramètres : a : arbre_poly (D/R)
+  --              n : noeud (D)
+  -- Précondition : /
+  -- Postcondition : le pere de a est le noeud n. le pere de n est l'ancien pere de a.
+  -- Exception : ARBRE_VIDE
+  procedure Ap_Inserer_Pere(a : in out arbre_poly; n : in noeud);
+ 
   -- Procédure Ap_Inserer_Dernier_Fils
   -- Sémantique : Insérer un arbre sans frère en position de dernier fils d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
