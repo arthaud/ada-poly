@@ -112,7 +112,7 @@ Prend un polynôme et retourne la chaine de caractères correspondante
 
 Paramètres : p : polynome (D)
 Précondition : /
-Postcondition : le polynôme retourné est p
+Postcondition : la chaine de caractère vérifie les contraintes du sujet
 Exception : LONGUEUR_MAX
 
 structure de contrôle : séquence
@@ -150,3 +150,37 @@ structure de contrôle : If
           - Décaler les caractères après la constante de ce nombre de caractère
           - Ecrire la variable a la position fin_constante
   - SP3. Parcourir les pères
+
+
+Encoder :
+=========
+
+Prend un polynôme sous forme de chaine de caractères, et retourne un polynôme
+
+Paramètres : p : str (D)
+Type retour : polynome
+Précondition : p vérifie les contraintes du sujet
+Postcondition : le polynôme retourné est p
+
+structure de contrôle : séquence
+  - Initialiser pos = 1
+  - Initialiser resultat (polynôme nulle)
+  - Tant que pos <= p.longueur
+      - SP1. Lire un monome
+  - Retourner resultat
+
+SP1. Lire un monome :
+=====================
+
+  - Lire le signe et Augmenter pos
+  - Lire la constante et Augmenter pos
+  - Construire la feuille dans noeud_courant
+  - Tant que le caractère de la position courante n'est pas un signe
+      - Lire la variable et Augmenter la position courante
+      - Lire la puissance et Augmenter la position courante
+      - Modifier la puissance de noeud_courant
+      - Ajouter la variable en père
+      - Mettre le père en noeud_courant 
+  - Trouver la racine de noeud_courant
+  - Ajouter ce polynome au resultat
+
