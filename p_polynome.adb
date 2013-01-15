@@ -30,28 +30,6 @@ package body p_polynome is
     end if;
   end Ecrire_Caractere;
 
-  -- fonction Taille_Entier
-  -- Sémantique : retourne la taille (nombre de caractères) d'un entier
-  -- Paramètres : n : integer (D)
-  -- Type de retour : integer
-  -- Précondition : n >= 0
-  -- Postcondition : /
-  function Taille_Entier(n : in integer) return integer is
-    p : integer := n;
-    t : integer := 0;
-  begin
-    if n = 0 then
-      return 1;
-    else
-      while p /= 0 loop
-        p := p / 10;
-        t := t + 1;
-      end loop;
-
-      return t;
-    end if;
-  end Taille_Entier;
-
   -- procedure Ecrire_Entier
   -- Sémantique : Ecrit un entier dans le résultat
   -- Paramètres : resultat : str (D/R)
@@ -63,17 +41,13 @@ package body p_polynome is
     p : integer := n;
     t : integer;
   begin
-    t := Taille_Entier(n);
+    t := Integer'Image(n)'Length - 1;
 
     if resultat.longueur + t > CMAX then
       raise LONGUEUR_MAX;
     else
+      resultat.valeur((resultat.longueur + 1)..(resultat.longueur + t)) := Integer'Image(n)(2..(t+1));
       resultat.longueur := resultat.longueur + t;
-
-      for i in 1..t loop
-        resultat.valeur(resultat.longueur - i + 1) := Character'Val(Character'Pos('0') + (p mod 10));
-        p := p / 10;
-      end loop;
     end if;
   end Ecrire_Entier;
 
@@ -94,7 +68,7 @@ package body p_polynome is
   begin
     if puissance /= 0 then
       -- Calcul de la place nécéssaire à l'écriture de la variable
-      t := 1 + Taille_Entier(puissance);
+      t := 1 + Integer'Image(puissance)'Length - 1;
       nouvelle_longueur := resultat.longueur + t;
 
       if nouvelle_longueur > CMAX then
