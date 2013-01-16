@@ -271,21 +271,17 @@ begin
   -- Test Ap_Inserer_Pere --
   --------------------------
   Put("Insertion d'un père");
-  n.var := 'A';
+  n.var := 'C';
   temp := Ap_Creer_Feuille(n);
   
+  n.var := 'A';
+  temp2 := Ap_Creer_Feuille(n);
+  Ap_Inserer_Fils(temp2, temp);
+
   n.var := 'B';
-  temp2 := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(temp, temp2);
-
-  n.var := 'C';
-  temp2 := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(temp, temp2);
-
-  n.var := 'D';
-  Ap_Inserer_Pere(temp2, n);
+  Ap_Inserer_Pere(temp, n);
   
-  Test(Ap_Valeur(temp2).var = 'C' and Ap_Valeur(Ap_Frere(temp2)).var = 'B' and Ap_Valeur(Ap_Pere(temp2)).var = 'D' and Ap_Valeur(Ap_Pere(Ap_Frere(temp2))).var = 'D' and Ap_Valeur(Ap_Pere(Ap_Pere(temp2))).var = 'A');
+  Test(Ap_Valeur(temp).var = 'C' and Ap_Valeur(Ap_Pere(temp)).var = 'B' and Ap_Valeur(Ap_Pere(Ap_Pere(temp))).var = 'A' and Ap_Est_Racine(Ap_Pere(Ap_Pere(temp))));
 
   -- Test de l'exception ARBRE_VIDE
   Put("Exception lors de l'insertion d'un père dans un arbre vide");

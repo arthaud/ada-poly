@@ -158,8 +158,8 @@ package p_arbre_poly is
   -- Sémantique : Insérer un noeud en père d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
   --              n : noeud (D)
-  -- Précondition : /
-  -- Postcondition : le pere de a est le noeud n. le pere de n est l'ancien pere de a.
+  -- Précondition : a est sans frère, et si a a un père, c'est son unique fils
+  -- Postcondition : le père de a est le noeud n, et le père du noeud n est l'ancien père de a
   -- Exception : ARBRE_VIDE
   procedure Ap_Inserer_Pere(a : in out arbre_poly; n : in noeud);
  
