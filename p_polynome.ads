@@ -22,7 +22,7 @@ package p_polynome is
   -- Type retour : polynome
   -- Précondition : p vérifie les contraintes du sujet
   -- Postcondition : le polynôme retourné est p
-  -- function Encoder(p : in str) return polynome;
+  function Encoder(p : in str) return polynome;
 
   -- Fonction Decoder
   -- Sémantique : Prend un polynôme et retourne la chaine de caractères correspondante
@@ -31,7 +31,7 @@ package p_polynome is
   -- Précondition : /
   -- Postcondition : la chaine de caractère vérifie les contraintes du sujet
   -- Exception : LONGUEUR_MAX
-  function Decoder(p : in arbre_poly) return str;
+  function Decoder(p : in polynome) return str;
 
   -- Fonction Ajouter
   -- Sémantique : Fait l'addition de deux polynomes
@@ -40,7 +40,7 @@ package p_polynome is
   -- Type retour : polynome
   -- Précondition : /
   -- Postcondition : la sortie vaut p1 + p2
-  function Ajouter(p1 : in arbre_poly; p2 : in arbre_poly) return arbre_poly;
+  function Ajouter(p1 : in polynome; p2 : in polynome) return polynome;
 
   private
     type polynome is new arbre_poly;

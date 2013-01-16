@@ -1,5 +1,4 @@
 with p_polynome; use p_polynome;
-with p_arbre_poly; use p_arbre_poly;
 with ada.text_io; use ada.text_io;
 
 procedure p_polynome_test is
@@ -19,209 +18,71 @@ procedure p_polynome_test is
     end if;
   end Test;
 
-  n : noeud;
-  poly1 : arbre_poly;
-  poly2 : arbre_poly;
-  poly3 : arbre_poly;
-  poly4 : arbre_poly;
-  poly5 : arbre_poly;
-  temp : arbre_poly;
-  temp2 : arbre_poly;
-  fils : arbre_poly;
+  poly : polynome;
+  poly1 : polynome;
+  poly2 : polynome;
+  poly3 : polynome;
+  poly4 : polynome;
 
-  aff : str;
+  string1 : str;
+  string2 : str;
+  string3 : str;
+  string4 : str;
+  string_temp : str;
 begin
 
-  -- Arbre Poly 1 --
-  n.puiss := 0;
-  n.var := 'X';
-  n.const := 0;
+  -----------------------------
+  -- Test Encoder et Decoder --
+  -----------------------------
+  Put_line("Encodage et Decodage d'un polynome :");
 
-  poly1 := Ap_Creer_Feuille(n);
+  string1.valeur(1..12) := "+1+2X1+3X1Y2";
+  string1.longueur := 12;
+  poly1 := Encoder(string1);
 
-  n.puiss := 1;
-  n.var := ' ';
-  n.const := 4;
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly1, temp);
+  string2.valeur(1..25) := "+13+1Z3-1X1Y1Z1+4X1Y2+1X2";
+  string2.longueur := 25;
+  poly2 := Encoder(string2);
 
-  n.puiss := 0;
-  n.var := 'Z';
-  n.const := 0;
-  fils := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly1, fils);
+  string3.valeur(1..25):= "-12-1Z3+1X1Y1Z1-4X1Y2-1X2";
+  string3.longueur := 25;
+  poly3 := Encoder(string3);
 
-  n.puiss := 3;
-  n.var := ' ';
-  n.const := 1;
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
+  string4.valeur(1..16) := "+5X1+2X1Z2-4X1Y2";
+  string4.longueur := 16;
+  poly4 := Encoder(string4);
 
-  n.puiss := 0;
-  n.var := ' ';
-  n.const := 13;
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
+  Put("Test 1");
+  string_temp := Decoder(poly1);
+  Test(string1.longueur = string_temp.longueur and string1.valeur(1..string1.longueur) = string_temp.valeur(1..string1.longueur));
 
-  Put_line("Polynome 1 :");
-  Ap_Afficher(poly1);
-  new_line;
+  Put("Test 2");
+  string_temp := Decoder(poly2);
+  Test(string2.longueur = string_temp.longueur and string2.valeur(1..string2.longueur) = string_temp.valeur(1..string2.longueur));
 
-  -- Arbre Poly 2 --
-  n.puiss := 0;
-  n.var := 'X';
-  n.const := 0;
+  Put("Test 3");
+  string_temp := Decoder(poly3);
+  Test(string3.longueur = string_temp.longueur and string3.valeur(1..string3.longueur) = string_temp.valeur(1..string3.longueur));
 
-  poly2 := Ap_Creer_Feuille(n);
+  Put("Test 4");
+  string_temp := Decoder(poly4);
+  Test(string4.longueur = string_temp.longueur and string4.valeur(1..string4.longueur) = string_temp.valeur(1..string4.longueur));
 
-  n.puiss := 1;
-  n.var := 'Z';
-  n.const := 0;
+  ------------------
+  -- Test Ajouter --
+  ------------------
+  Put_line("Ajout de polynomes :");
 
-  fils := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly2, fils);
+  Put("Test 1");
+  string_temp := Decoder(Ajouter(poly1, poly2));
+  Test(string_temp.longueur = 29 and string_temp.valeur(1..29) = "+14+1Z3+2X1-1X1Y1Z1+7X1Y2+1X2");
 
-  n.puiss := 1;
-  n.var := ' ';
-  n.const := 2;
-  
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
+  Put("Test 2");
+  string_temp := Decoder(Ajouter(poly2, poly3));
+  Test(string_temp.longueur = 2 and string_temp.valeur(1..2) = "+1");
 
-  n.puiss := 0;
-  n.var := ' ';
-  n.const := -3;
+  Put("Test 3");
+  string_temp := Decoder(Ajouter(poly1, poly4));
+  Test(string_temp.longueur = 18 and string_temp.valeur(1..18) = "+1+7X1+2X1Z2-1X1Y2");
 
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly2, temp);
-
-  Put_line("Polynome 2:");
-  Ap_Afficher(poly2);
-  new_line;
-
-  -- Arbre Poly 3 --
-  n.puiss := 0;
-  n.var := 'Z';
-  n.const := 0;
-
-  poly3 := Ap_Creer_Feuille(n);
-
-  n.puiss := 3;
-  n.var := ' ';
-  n.const := -1;
-
-  fils := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly3, fils);
-
-  Put_line("Polynome 3:");
-  Ap_Afficher(poly3);
-  new_line;
-
-  -- Arbre Poly 4 --
-  n.puiss := 0;
-  n.var := 'X';
-  n.const := 0;
-
-  poly4 := Ap_Creer_Feuille(n);
-
-  n.puiss := 1;
-  n.var := 'Z';
-  n.const := 0;
-
-  fils := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly4, fils);
-
-  n.puiss := 1;
-  n.var := ' ';
-  n.const := -2;
-  
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
-
-  n.puiss := 0;
-  n.var := ' ';
-  n.const := 3;
-
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly4, temp);
-
-  Put_line("Polynome 4:");
-  Ap_Afficher(poly4);
-  new_line;
-
-  -- Arbre Poly 5 --
-  n.puiss := 0;
-  n.var := 'X';
-  n.const := 0;
-
-  poly5 := Ap_Creer_Feuille(n);
-
-  n.puiss := 2;
-  n.var := ' ';
-  n.const := 1;
-
-  fils := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly5, fils);
-
-  n.puiss := 1;
-  n.var := 'Y';
-  n.const := 0;
-  fils := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly5, fils);
-
-  n.puiss := 2;
-  n.var := ' ';
-  n.const := 4;
-  
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
-  
-  n.puiss := 1;
-  n.var := 'Z';
-  n.const := 0;
-
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
-
-  n.puiss := 1;
-  n.var := ' ';
-  n.const := -1;
-
-  temp2 := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(temp, temp2);
-
-  n.puiss := 0;
-  n.var := 'Z';
-  n.const := 0;
-
-  fils := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(poly5, fils);
-
-  n.puiss := 3;
-  n.var := ' ';
-  n.const := 1;
-
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
-
-  n.puiss := 0;
-  n.var := ' ';
-  n.const := 13;
-
-  temp := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(fils, temp);
-
-  Put_line("Polynome 5:");
-  Ap_Afficher(poly5);
-  new_line;
-
-  -- Somme --
-  Put_line("Somme 1 + 4:");
-  Ap_Afficher(Ajouter(poly1, poly4));
-  new_line;
-
-  -- Decodage --
-  aff := Decoder(poly5);
-  Put_line("Decodage 5:");
-  Put_line(aff.valeur(1..aff.longueur));
 end p_polynome_test;

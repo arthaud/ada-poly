@@ -5,13 +5,106 @@ with p_arbre_poly; use p_arbre_poly;
 ------------------------
 package body p_polynome is
 
+  -- Procedure Lire_Entier
+  -- Sémantique : Lire un entier à partir de la position pos
+  -- Paramètres : p : str (D)
+  --              pos : integer (D/R)
+  --              entier : integer (R)
+  -- Précondition : /
+  -- Postcondition : /
+  procedure Lire_Entier(p : in str; pos : in out integer; entier : out integer) is
+  begin
+    entier := 0;
+
+    while pos <= p.longueur and then (Character'Pos(p.valeur(pos)) >= Character'Pos('0') and Character'Pos(p.valeur(pos)) <= Character'Pos('9')) loop
+      entier := entier * 10 + (Character'Pos(p.valeur(pos)) - Character'Pos('0'));
+      pos := pos + 1;
+    end loop;
+  end Lire_Entier;
+
+  -- Procedure Lire_Monome
+  -- Sémantique : Lire un monome, et l'ajouter au résultat
+  -- Paramètres : p : str (D)
+  --              pos : integer (D/R)
+  --              resultat : polynome (D/R)
+  -- Précondition : pos <= p.longueur
+  -- Postcondition : /
+  procedure Lire_Monome(p : in str; pos : in out integer; resultat : in out polynome) is
+    positif : boolean;
+    constante : integer;
+    monome : polynome;
+    n : noeud;
+    variable : character;
+    puissance : integer;
+  begin
+    -- Lecture du signe
+    positif := p.valeur(pos) = '+';
+    pos := pos + 1;
+
+    -- Lecture de la constante
+    Lire_Entier(p, pos, constante);
+
+    -- Construction de la feuille
+    n.puiss := 0;
+    n.var := ' ';
+    if positif then
+      n.const := constante;
+    else
+      n.const := - constante;
+    end if;
+    monome := Ap_Creer_Feuille(n);
+
+    -- Lecture des variables
+    while pos <= p.longueur and then (p.valeur(pos) /= '+' and p.valeur(pos) /= '-') loop
+      -- Lire la variable
+      variable := p.valeur(pos);
+      pos := pos + 1;
+
+      -- Lire la puissance
+      Lire_Entier(p, pos, puissance);
+
+      -- Ajouter la variable en père
+      n.puiss := Ap_Valeur(monome).puiss;
+      n.var := variable;
+      n.const := 0;
+      Ap_Inserer_Pere(monome, n);
+      
+      -- Modifier la puissance de la constante
+      n := Ap_Valeur(monome);
+      n.puiss := puissance;
+      Ap_Changer_Valeur(monome, n);
+    end loop;
+
+    -- Recuperation de la racine
+    while not(Ap_Est_Racine(monome)) loop
+      monome := Ap_Pere(monome);
+    end loop;
+
+    -- Ajout du monome au résultat
+    resultat := Ajouter(resultat, monome);
+  end Lire_Monome;
+
   -- Fonction Encoder
   -- Sémantique : Prend un polynôme sous forme de chaine de caractères, et retourne un polynôme
   -- Paramètres : p : str (D)
   -- Type retour : polynome
   -- Précondition : p vérifie les contraintes du sujet
   -- Postcondition : le polynôme retourné est p
-  -- function Encoder(p : in str) return polynome;
+  function Encoder(p : in str) return polynome is
+    pos : integer;
+    resultat : polynome;
+  begin
+    -- Initialisation
+    pos := 1;
+    resultat := Ap_Creer_Vide;
+
+    while pos <= p.longueur loop
+      -- Lire un monome
+      Lire_Monome(p, pos, resultat);
+    end loop;
+
+    return resultat;
+  end Encoder;
 
   -- procedure Ecrire_Caractere
   -- Sémantique : Ecrit un caractère dans le résultat
@@ -62,7 +155,7 @@ package body p_polynome is
   --   fin_constante est la position du dernier caractère de la constante
   -- Postcondition : /
   -- Exception : LONGUEUR_MAX
-  procedure Ecrire_Monome_Pere(p : in arbre_poly; resultat : in out str; puissance : in integer; fin_constante : in integer) is
+  procedure Ecrire_Monome_Pere(p : in polynome; resultat : in out str; puissance : in integer; fin_constante : in integer) is
     t : integer;
     nouvelle_longueur : integer;
   begin
@@ -100,7 +193,7 @@ package body p_polynome is
   -- Précondition : Ap_Valeur(p).const /= 0
   -- Postcondition : le monome p est écrit
   -- Exception : LONGUEUR_MAX
-  procedure Ecrire_Monome(p : in arbre_poly; resultat : in out str) is
+  procedure Ecrire_Monome(p : in polynome; resultat : in out str) is
   begin
     -- Ecrire le signe
     if Ap_Valeur(p).const >= 0 then
@@ -125,7 +218,7 @@ package body p_polynome is
   -- Précondition : /
   -- Postcondition : /
   -- Exception : LONGUEUR_MAX
-  procedure Decoder_Aux(p : in arbre_poly; resultat : in out str) is
+  procedure Decoder_Aux(p : in polynome; resultat : in out str) is
   begin
     if Ap_Valeur(p).const /= 0 then -- constante
       Ecrire_Monome(p, resultat);
@@ -146,7 +239,7 @@ package body p_polynome is
   -- Précondition : /
   -- Postcondition : la chaine de caractère vérifie les contraintes du sujet
   -- Exception : LONGUEUR_MAX
-  function Decoder(p : in arbre_poly) return str is
+  function Decoder(p : in polynome) return str is
     resultat : str;
   begin
     -- Initialiser le resultat
@@ -169,7 +262,7 @@ package body p_polynome is
   --   Ap_Valeur(p2).const /= 0
   --   Ap_Valeur(p1).puiss = Ap_Valeur(p2).puiss
   -- Postcondition : la sortie vaut p1 + p2
-  function Ajouter_Constante(p1 : in arbre_poly; p2 : in arbre_poly) return arbre_poly is
+  function Ajouter_Constante(p1 : in polynome; p2 : in polynome) return polynome is
     n : noeud;
   begin
     n.puiss := Ap_Valeur(p1).puiss;
@@ -194,12 +287,12 @@ package body p_polynome is
   --   Ap_Valeur(p1).const = 0 donc p1 a au moins un fils
   --   Ap_Valeur(p1).puiss = Ap_Valeur(p2).puiss
   -- Postcondition : la sortie vaut p1 + p2
-  function Ajouter_Puissance0(p1 : in arbre_poly; p2 : in arbre_poly) return arbre_poly is
+  function Ajouter_Puissance0(p1 : in polynome; p2 : in polynome) return polynome is
     n : noeud;
-    p2_copie : arbre_poly;
-    somme : arbre_poly;
-    resultat : arbre_poly;
-    autre_fils : arbre_poly;
+    p2_copie : polynome;
+    somme : polynome;
+    resultat : polynome;
+    autre_fils : polynome;
   begin
     -- Copie de p2, en mettant la puissance 0 à la racine
     p2_copie := Ap_Copier_Sans_Frere(p2);
@@ -241,12 +334,12 @@ package body p_polynome is
   --   Ap_Valeur(p1).var = Ap_Valeur(p2).var
   --   Ap_Valeur(p1).puiss = Ap_Valeur(p2).puiss
   -- Postcondition : la sortie vaut p1 + p2
-  function Ajouter_Variable_Identique(p1 : in arbre_poly; p2 : in arbre_poly) return arbre_poly is
-    resultat : arbre_poly;
-    sp1 : arbre_poly;
-    sp2 : arbre_poly;
-    somme : arbre_poly;
-    copie : arbre_poly;
+  function Ajouter_Variable_Identique(p1 : in polynome; p2 : in polynome) return polynome is
+    resultat : polynome;
+    sp1 : polynome;
+    sp2 : polynome;
+    somme : polynome;
+    copie : polynome;
   begin
     -- copie de la racine
     resultat := Ap_Creer_Feuille(Ap_Valeur(p1));
@@ -328,9 +421,9 @@ package body p_polynome is
   --              p2 : polynome (D)
   -- Précondition : /
   -- Postcondition : la sortie vaut p1 + p2
-  function Ajouter(p1 : in arbre_poly; p2 : in arbre_poly) return arbre_poly is
+  function Ajouter(p1 : in polynome; p2 : in polynome) return polynome is
   begin
-    if Ap_Vide(p1) and Ap_Vide(p1) then -- p1 et p2 sont vides
+    if Ap_Vide(p1) and Ap_Vide(p2) then -- p1 et p2 sont vides
       return Ap_Creer_Vide;
     elsif Ap_Vide(p1) then -- p1 est vide
       return Ap_Copier_Sans_Frere(p2);

@@ -174,13 +174,12 @@ SP1. Lire un monome :
 
   - Lire le signe et Augmenter pos
   - Lire la constante et Augmenter pos
-  - Construire la feuille dans noeud_courant
-  - Tant que le caractère de la position courante n'est pas un signe
+  - Construire la feuille
+  - Tant qu'on est pas à la fin et que le caractère de la position courante n'est pas un signe
       - Lire la variable et Augmenter la position courante
       - Lire la puissance et Augmenter la position courante
-      - Modifier la puissance de noeud_courant
-      - Ajouter la variable en père
-      - Mettre le père en noeud_courant 
-  - Trouver la racine de noeud_courant
-  - Ajouter ce polynome au resultat
+      - Ajouter la variable en père de la constante
+      - Modifier la puissance de la constante
+  - Recuperer la racine du monome
+  - Ajouter ce monome au resultat
 
