@@ -78,31 +78,23 @@ SP4.1 Parcourir les fils :
 
 structure de contrôle : séquence
   - Initialiser 2 pointeurs sp1 et sp2 vers les premiers fils
-  - structure de contrôle : repeter jusqu'a ce que sp1 ou sp2 soit l'arbre vide
+  - structure de contrôle : repeter jusqu'a ce que sp1 et sp2 soit l'arbre vide
+      - Si sp2 est vide
+          - Ajouter sp1 au resultat
+          - Faire pointer sp1 vers son frère
+      - Si sp1 est vide
+          Idem précédent
       - Si sp1 et sp2 ont la même puissance
           - Ajouter sp1 et sp2
           - Si la somme n'est pas vide
               Ajouter la somme en dernier fils de resultat
-          - Si sp1 a un frère
-              Assigner le premier frère de sp1 à sp1
-          - Sinon
-              Assigner l'arbre vide à sp1
-          - Si sp2 a un frère
-              Assigner le premier frère de sp2 à sp2
-          - Sinon
-              Assigner l'arbre vide à sp2
+          - Faire pointer sp1 vers son frère
+          - Faire pointer sp2 vers son frère
       - Sinon, la puissance de sp1 est plus petite que sp2
           - Copier sp1 et l'Ajouter en dernier fils de resultat
-          - Si sp1 a un frère
-              Assigner le premier frère de sp1 à sp1
-          - Sinon
-              Assigner l'arbre vide à sp1
+          - Faire pointer sp1 vers son frère
       - Sinon
           Idem précédent
-  - si sp1 n'est pas l'arbre vide
-      Copier sp1 et l'Ajouter en dernier fils de resultat
-  - si sp2 n'est pas l'arbre vide
-      Copier sp2 et l'Ajouter en dernier fils de resultat
 
 
 Decoder : 

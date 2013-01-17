@@ -340,24 +340,37 @@ package body p_polynome is
     resultat : polynome;
     sp1, sp2, somme, copie : polynome;
 
+    -- Fonction Frere_Suivant
+    -- Sémantique : Retourne le frère de p, ou vide sinon
     function Frere_Suivant(p : in polynome) return polynome is
     begin
       if Ap_Frere_Existe(p) then
-	return Ap_Frere(p);
+        return Ap_Frere(p);
       else
-	return Ap_Creer_Vide;
+        return Ap_Creer_Vide;
       end if;
     end Frere_Suivant;
+
   begin
     -- copie de la racine
     resultat := Ap_Creer_Feuille(Ap_Valeur(p1));
-    
+
     -- Parcours des fils
     sp1 := Ap_Fils(p1);
     sp2 := Ap_Fils(p2);
 
     loop
-      if Ap_Valeur(sp1).puiss = Ap_Valeur(sp2).puiss then -- sp1 et sp2 ont la même puissance
+      if Ap_Vide(sp2) then -- sp2 vide
+        copie := Ap_Copier_Sans_Frere(sp1);
+        Ap_Inserer_Dernier_Fils(resultat, copie);
+
+        sp1 := Frere_Suivant(sp1);
+      elsif Ap_Vide(sp1) then -- sp1 vide
+        copie := Ap_Copier_Sans_Frere(sp2);
+        Ap_Inserer_Dernier_Fils(resultat, copie);
+
+        sp2 := Frere_Suivant(sp2);
+      elsif Ap_Valeur(sp1).puiss = Ap_Valeur(sp2).puiss then -- sp1 et sp2 ont la même puissance
         somme := Ajouter(sp1, sp2);
 
         if not(Ap_Vide(somme)) then -- si la somme n'est pas nulle
@@ -366,12 +379,11 @@ package body p_polynome is
 
         sp1 := Frere_Suivant(sp1);
         sp2 := Frere_Suivant(sp2);
-
       elsif Ap_Valeur(sp1).puiss < Ap_Valeur(sp2).puiss then -- puissance de sp1 plus petite que sp2
         copie := Ap_Copier_Sans_Frere(sp1);
         Ap_Inserer_Dernier_Fils(resultat, copie);
 
-         sp1 := Frere_Suivant(sp1);
+        sp1 := Frere_Suivant(sp1);
       else -- puissance de sp1 plus grande que sp2
         copie := Ap_Copier_Sans_Frere(sp2);
         Ap_Inserer_Dernier_Fils(resultat, copie);
@@ -379,22 +391,9 @@ package body p_polynome is
         sp2 := Frere_Suivant(sp2);
       end if;
 
-      exit when Ap_Vide(sp1) or Ap_Vide(sp2);
+      exit when Ap_Vide(sp1) and Ap_Vide(sp2);
     end loop;
-
-    -- on met dans sp1 les fils non vides
-    if Ap_Vide(sp1) then
-      sp1 := sp2;
-    end if;
-    
-    -- si sp1 n'est pas vide, on ajoute ces fils au résultat
-    while not(Ap_Vide(sp1)) loop
-      copie := Ap_Copier_Sans_Frere(sp1);
-      Ap_Inserer_Dernier_Fils(resultat, copie);
-
-      sp1 := Frere_Suivant(sp1);
-    end loop;
-    -- Ap_Vide(sp1)
+    -- Ap_Vide(sp1) and Ap_Vide(sp2)
 
     if Ap_Est_Feuille(resultat) then -- aucun fils
       return Ap_Creer_Vide;
