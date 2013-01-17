@@ -19,15 +19,9 @@ procedure p_polynome_test is
   end Test;
 
   poly : polynome;
-  poly1 : polynome;
-  poly2 : polynome;
-  poly3 : polynome;
-  poly4 : polynome;
+  poly1, poly2, poly3, poly4 : polynome;
 
-  string1 : str;
-  string2 : str;
-  string3 : str;
-  string4 : str;
+  string1, string2, string3, string4 : str;
   string_temp : str;
 begin
 

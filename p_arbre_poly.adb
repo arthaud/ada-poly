@@ -163,7 +163,7 @@ package body p_arbre_poly is
       if a.all.valeur.const = 0 then
         put(a.all.valeur.var);
       else
-        put(a.all.valeur.const, 3);
+        put(a.all.valeur.const, Integer'Image(a.all.valeur.const)'Length);
       end if;
       new_line;
       -- afficher le fils
@@ -346,6 +346,7 @@ package body p_arbre_poly is
       while temp.all.frere /= Null loop -- arret lors du dernier frère
         temp := temp.all.frere;
       end loop;
+      -- temp.all.frere = Null
 
       -- Insertion sur le dernier frère
       a_ins.all.pere := a.all.pere;
@@ -404,6 +405,7 @@ package body p_arbre_poly is
         temp := temp.all.frere;
         p := p+1;
       end loop;
+      -- temp.all.frere = Null or p=n
 
       -- Fin de Parcours des frères
 
@@ -445,6 +447,7 @@ package body p_arbre_poly is
         temp.all.pere := resultat;
         temp := temp.all.frere;
       end loop;
+      -- temp = Null
 
       return resultat;
     end if;
@@ -476,6 +479,7 @@ package body p_arbre_poly is
         temp.all.pere := resultat;
         temp := temp.all.frere;
       end loop;
+      -- temp = Null
 
       return resultat;
     end if;

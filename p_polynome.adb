@@ -20,6 +20,7 @@ package body p_polynome is
       entier := entier * 10 + (Character'Pos(p.valeur(pos)) - Character'Pos('0'));
       pos := pos + 1;
     end loop;
+    -- pos > p.longueur or Character'Pos(p.valeur(pos)) < Character'Pos('0') or Character'Pos(p.valeur(pos)) > Character'Pos('9')
   end Lire_Entier;
 
   -- Procedure Lire_Monome
@@ -31,11 +32,10 @@ package body p_polynome is
   -- Postcondition : /
   procedure Lire_Monome(p : in str; pos : in out integer; resultat : in out polynome) is
     positif : boolean;
-    constante : integer;
+    constante, puissance : integer;
+    variable : character;
     monome : polynome;
     n : noeud;
-    variable : character;
-    puissance : integer;
   begin
     -- Lecture du signe
     positif := p.valeur(pos) = '+';
@@ -74,11 +74,13 @@ package body p_polynome is
       n.puiss := puissance;
       Ap_Changer_Valeur(monome, n);
     end loop;
+    -- pos > p.longueur or p.valeur(pos) = '+' or p.valeur(pos) = '-'
 
     -- Recuperation de la racine
     while not(Ap_Est_Racine(monome)) loop
       monome := Ap_Pere(monome);
     end loop;
+    -- Ap_Est_Racine(monome)
 
     -- Ajout du monome au résultat
     resultat := Ajouter(resultat, monome);
@@ -102,6 +104,7 @@ package body p_polynome is
       -- Lire un monome
       Lire_Monome(p, pos, resultat);
     end loop;
+    -- pos > p.longueur
 
     return resultat;
   end Encoder;
@@ -289,14 +292,10 @@ package body p_polynome is
   -- Postcondition : la sortie vaut p1 + p2
   function Ajouter_Puissance0(p1 : in polynome; p2 : in polynome) return polynome is
     n : noeud;
-    p2_copie : polynome;
-    somme : polynome;
-    resultat : polynome;
-    autre_fils : polynome;
+    p2_copie, somme, resultat, autre_fils : polynome;
   begin
     -- Copie de p2, en mettant la puissance 0 à la racine
     p2_copie := Ap_Copier_Sans_Frere(p2);
-    
     n := Ap_Valeur(p2);
     n.puiss := 0;
     Ap_Changer_Valeur(p2_copie, n);
@@ -311,7 +310,10 @@ package body p_polynome is
       else
         resultat := Ap_Copier_Sans_Frere(p1);
         Ap_Supprimer_Fils(resultat, 1);
-        Ap_Inserer_Fils(resultat, somme);
+
+	if not(Ap_Vide(somme)) then
+	  Ap_Inserer_Fils(resultat, somme);
+	end if;
 
         return resultat;
       end if;
@@ -336,10 +338,16 @@ package body p_polynome is
   -- Postcondition : la sortie vaut p1 + p2
   function Ajouter_Variable_Identique(p1 : in polynome; p2 : in polynome) return polynome is
     resultat : polynome;
-    sp1 : polynome;
-    sp2 : polynome;
-    somme : polynome;
-    copie : polynome;
+    sp1, sp2, somme, copie : polynome;
+
+    function Frere_Suivant(p : in polynome) return polynome is
+    begin
+      if Ap_Frere_Existe(p) then
+	return Ap_Frere(p);
+      else
+	return Ap_Creer_Vide;
+      end if;
+    end Frere_Suivant;
   begin
     -- copie de la racine
     resultat := Ap_Creer_Feuille(Ap_Valeur(p1));
@@ -356,36 +364,19 @@ package body p_polynome is
           Ap_Inserer_Dernier_Fils(resultat, somme);
         end if;
 
-        if Ap_Frere_Existe(sp1) then -- si sp1 a un frère
-          sp1 := Ap_Frere(sp1);
-        else
-          sp1 := Ap_Creer_Vide;
-        end if;
-
-        if Ap_Frere_Existe(sp2) then -- si sp2 a un frère
-          sp2 := Ap_Frere(sp2);
-        else
-          sp2 := Ap_Creer_Vide;
-        end if;
+        sp1 := Frere_Suivant(sp1);
+        sp2 := Frere_Suivant(sp2);
 
       elsif Ap_Valeur(sp1).puiss < Ap_Valeur(sp2).puiss then -- puissance de sp1 plus petite que sp2
         copie := Ap_Copier_Sans_Frere(sp1);
         Ap_Inserer_Dernier_Fils(resultat, copie);
 
-        if Ap_Frere_Existe(sp1) then -- si sp1 a un frère
-          sp1 := Ap_Frere(sp1);
-        else
-          sp1 := Ap_Creer_Vide;
-        end if;
+         sp1 := Frere_Suivant(sp1);
       else -- puissance de sp1 plus grande que sp2
         copie := Ap_Copier_Sans_Frere(sp2);
         Ap_Inserer_Dernier_Fils(resultat, copie);
 
-        if Ap_Frere_Existe(sp2) then -- si sp2 a un frère
-          sp2 := Ap_Frere(sp2);
-        else
-          sp2 := Ap_Creer_Vide;
-        end if;
+        sp2 := Frere_Suivant(sp2);
       end if;
 
       exit when Ap_Vide(sp1) or Ap_Vide(sp2);
@@ -401,12 +392,9 @@ package body p_polynome is
       copie := Ap_Copier_Sans_Frere(sp1);
       Ap_Inserer_Dernier_Fils(resultat, copie);
 
-      if Ap_Frere_Existe(sp1) then
-        sp1 := Ap_Frere(sp1);
-      else
-        sp1 := Ap_Creer_Vide;
-      end if;
+      sp1 := Frere_Suivant(sp1);
     end loop;
+    -- Ap_Vide(sp1)
 
     if Ap_Est_Feuille(resultat) then -- aucun fils
       return Ap_Creer_Vide;

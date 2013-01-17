@@ -26,10 +26,7 @@ procedure p_arbren_test is
 	-- Exception : /
 	function Arbre_Test return arbren is
 	   arbre : arbren;
-	   fils1 : arbren;
-	   fils2 : arbren;
-	   fils3 : arbren;
-	   fils2_1 : arbren;
+	   fils1, fils2, fils2_1, fils3 : arbren;
 	begin
 		arbre := An_Creer_Feuille('a');
 		fils1 := An_Creer_Feuille('b');
@@ -45,11 +42,8 @@ procedure p_arbren_test is
 		return arbre;
 	end Arbre_Test;
 
-	arbre1 : arbren;
-	arbre2 : arbren;
-	arbre3 : arbren;
+	arbre1, arbre2, arbre3 : arbren;
 	a_vide : arbren;
-
 	v : character;
 	b : boolean;
 begin

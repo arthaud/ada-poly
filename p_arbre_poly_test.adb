@@ -21,12 +21,8 @@ procedure p_arbre_poly_test is
   n : noeud;
   b : boolean;
   arbre : arbre_poly;
-  fils1 : arbre_poly;
-  fils2 : arbre_poly;
-  fils3 : arbre_poly;
-  fils4 : arbre_poly;
-  temp : arbre_poly;
-  temp2 : arbre_poly;
+  fils1, fils2, fils3, fils4 : arbre_poly;
+  temp, temp2 : arbre_poly;
   a_vide : arbre_poly;
 begin
 

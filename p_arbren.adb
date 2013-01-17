@@ -296,6 +296,7 @@ package body p_arbren is
         temp := temp.all.frere;
         p := p+1;
       end loop;
+      -- temp.all.frere = Null or p=n
 
       -- Fin de Parcours des frères
 
