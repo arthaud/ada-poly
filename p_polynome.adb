@@ -31,10 +31,31 @@ package body p_polynome is
   -- Précondition : pos <= p.longueur
   -- Postcondition : /
   procedure Lire_Monome(p : in str; pos : in out integer; resultat : in out polynome) is
+
+    -- Procedure Ajouter_Fils
+    -- Sémantique : 
+    --   Si l'arbre est vide, crée une feuille de noeud n
+    --   Sinon, crée un fils de valeur n, et pointe dessus
+    -- Paramètres : monome : polynome (D/R)
+    --              n : noeud (D)
+    -- Précondition : monome est vide ou n'a pas de fils
+    -- Postcondition : Ap_Valeur(monome) = n
+    procedure Ajouter_Fils(monome : in out polynome; n : in noeud) is
+      nouveau_fils : polynome;
+    begin
+      if Ap_Vide(monome) then
+        monome := Ap_Creer_Feuille(n);
+      else
+        nouveau_fils := Ap_Creer_Feuille(n);
+        Ap_Inserer_Fils(monome, nouveau_fils);
+        monome := nouveau_fils;
+      end if;
+    end Ajouter_Fils;
+
     positif : boolean;
-    constante, puissance : integer;
+    constante, puissance, puissance_precedente : integer;
     variable : character;
-    monome : polynome;
+    monome, nouveau_fils : polynome;
     n : noeud;
   begin
     -- Lecture du signe
@@ -44,15 +65,9 @@ package body p_polynome is
     -- Lecture de la constante
     Lire_Entier(p, pos, constante);
 
-    -- Construction de la feuille
-    n.puiss := 0;
-    n.var := ' ';
-    if positif then
-      n.const := constante;
-    else
-      n.const := - constante;
-    end if;
-    monome := Ap_Creer_Feuille(n);
+    -- Initialisation
+    monome := Ap_Creer_Vide;
+    puissance_precedente := 0;
 
     -- Lecture des variables
     while pos <= p.longueur and then (p.valeur(pos) /= '+' and p.valeur(pos) /= '-') loop
@@ -63,18 +78,25 @@ package body p_polynome is
       -- Lire la puissance
       Lire_Entier(p, pos, puissance);
 
-      -- Ajouter la variable en père
-      n.puiss := Ap_Valeur(monome).puiss;
+      n.puiss := puissance_precedente;
       n.var := variable;
       n.const := 0;
-      Ap_Inserer_Pere(monome, n);
-      
-      -- Modifier la puissance de la constante
-      n := Ap_Valeur(monome);
-      n.puiss := puissance;
-      Ap_Changer_Valeur(monome, n);
+      Ajouter_Fils(monome, n);
+
+      -- Modification de puissance_precedente
+      puissance_precedente := puissance;
     end loop;
     -- pos > p.longueur or p.valeur(pos) = '+' or p.valeur(pos) = '-'
+
+    -- Ajout de la constante
+    n.puiss := puissance_precedente;
+    n.var := ' ';
+    if positif then
+      n.const := constante;
+    else
+      n.const := - constante;
+    end if;
+    Ajouter_Fils(monome, n);    
 
     -- Recuperation de la racine
     while not(Ap_Est_Racine(monome)) loop
@@ -311,9 +333,9 @@ package body p_polynome is
         resultat := Ap_Copier_Sans_Frere(p1);
         Ap_Supprimer_Fils(resultat, 1);
 
-	if not(Ap_Vide(somme)) then
-	  Ap_Inserer_Fils(resultat, somme);
-	end if;
+        if not(Ap_Vide(somme)) then
+          Ap_Inserer_Fils(resultat, somme);
+        end if;
 
         return resultat;
       end if;
@@ -337,11 +359,14 @@ package body p_polynome is
   --   Ap_Valeur(p1).puiss = Ap_Valeur(p2).puiss
   -- Postcondition : la sortie vaut p1 + p2
   function Ajouter_Variable_Identique(p1 : in polynome; p2 : in polynome) return polynome is
-    resultat : polynome;
-    sp1, sp2, somme, copie : polynome;
 
     -- Fonction Frere_Suivant
     -- Sémantique : Retourne le frère de p, ou vide sinon
+    -- Paramètres : p : polynome (D)
+    -- Type retour : polynome
+    -- Précondition : /
+    -- Postcondition : /
+    -- Exception : ARBRE_VIDE
     function Frere_Suivant(p : in polynome) return polynome is
     begin
       if Ap_Frere_Existe(p) then
@@ -351,6 +376,8 @@ package body p_polynome is
       end if;
     end Frere_Suivant;
 
+    resultat : polynome;
+    sp1, sp2, somme, copie : polynome;
   begin
     -- copie de la racine
     resultat := Ap_Creer_Feuille(Ap_Valeur(p1));

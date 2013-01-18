@@ -263,32 +263,6 @@ begin
   Put_line("Affichage d'un arbre :");
   Ap_Afficher(arbre);
 
-  --------------------------
-  -- Test Ap_Inserer_Pere --
-  --------------------------
-  Put("Insertion d'un père");
-  n.var := 'C';
-  temp := Ap_Creer_Feuille(n);
-  
-  n.var := 'A';
-  temp2 := Ap_Creer_Feuille(n);
-  Ap_Inserer_Fils(temp2, temp);
-
-  n.var := 'B';
-  Ap_Inserer_Pere(temp, n);
-  
-  Test(Ap_Valeur(temp).var = 'C' and Ap_Valeur(Ap_Pere(temp)).var = 'B' and Ap_Valeur(Ap_Pere(Ap_Pere(temp))).var = 'A' and Ap_Est_Racine(Ap_Pere(Ap_Pere(temp))));
-
-  -- Test de l'exception ARBRE_VIDE
-  Put("Exception lors de l'insertion d'un père dans un arbre vide");
-  begin
-    temp := Ap_Creer_Vide;
-    Ap_Inserer_Pere(temp, n);
-    Test(false);
-  exception
-    when ARBRE_VIDE => Test(true);
-  end;
-
   ----------------------------------
   -- Test Ap_Inserer_Dernier_Fils --
   ----------------------------------

@@ -279,33 +279,6 @@ package body p_arbre_poly is
     end if;
   end Ap_Inserer_Frere;
 
-  -- Procédure Ap_Inserer_Pere
-  -- Sémantique : Insérer un noeud en père d'un arbre a
-  -- Paramètres : a : arbre_poly (D/R)
-  --              n : noeud (D)
-  -- Précondition : a est sans frère, et si a a un père, c'est son unique fils
-  -- Postcondition : le père de a est le noeud n, et le père du noeud n est l'ancien père de a
-  -- Exception : ARBRE_VIDE
-  procedure Ap_Inserer_Pere(a : in out arbre_poly; n : in noeud) is
-    nouveau_pere : arbre_poly;
-  begin
-    if a = Null then
-      raise ARBRE_VIDE;
-    else
-      nouveau_pere := Ap_Creer_Feuille(n);
-
-      -- connexion ancien père / nouveau père
-      nouveau_pere.all.pere := a.all.pere;
-      if a.all.pere /= Null then
-        a.all.pere.all.fils := nouveau_pere;
-      end if;
-
-      -- connexion a / nouveau père
-      nouveau_pere.all.fils := a;
-      a.all.pere := nouveau_pere;
-    end if;
-  end Ap_Inserer_Pere;
-
   -- Procédure Ap_Inserer_Dernier_Fils
   -- Sémantique : Insérer un arbre sans frère en position de dernier fils d'un arbre a
   -- Paramètres : a : arbre_poly (D/R)
