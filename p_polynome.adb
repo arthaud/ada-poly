@@ -240,7 +240,7 @@ package body p_polynome is
   -- Sémantique : Parcours les constantes de l'arbre
   -- Paramètres : p : polynome (D)
   --              resultat : str (D/R)
-  -- Précondition : /
+  -- Précondition : p n'est pas l'arbre vide
   -- Postcondition : /
   -- Exception : LONGUEUR_MAX
   procedure Decoder_Aux(p : in polynome; resultat : in out str) is
@@ -270,8 +270,10 @@ package body p_polynome is
     -- Initialiser le resultat
     resultat.longueur := 0;
 
-    -- Parcourir chaque constante
-    Decoder_Aux(p, resultat);
+    if not(Ap_Vide(p)) then
+      -- Parcourir chaque constante
+      Decoder_Aux(p, resultat);
+    end if;
 
     return resultat;
   end Decoder;
@@ -359,23 +361,6 @@ package body p_polynome is
   --   Ap_Valeur(p1).puiss = Ap_Valeur(p2).puiss
   -- Postcondition : la sortie vaut p1 + p2
   function Ajouter_Variable_Identique(p1 : in polynome; p2 : in polynome) return polynome is
-
-    -- Fonction Frere_Suivant
-    -- Sémantique : Retourne le frère de p, ou vide sinon
-    -- Paramètres : p : polynome (D)
-    -- Type retour : polynome
-    -- Précondition : /
-    -- Postcondition : /
-    -- Exception : ARBRE_VIDE
-    function Frere_Suivant(p : in polynome) return polynome is
-    begin
-      if Ap_Frere_Existe(p) then
-        return Ap_Frere(p);
-      else
-        return Ap_Creer_Vide;
-      end if;
-    end Frere_Suivant;
-
     resultat : polynome;
     sp1, sp2, somme, copie : polynome;
   begin
@@ -391,12 +376,12 @@ package body p_polynome is
         copie := Ap_Copier_Sans_Frere(sp1);
         Ap_Inserer_Dernier_Fils(resultat, copie);
 
-        sp1 := Frere_Suivant(sp1);
+        sp1 := Ap_Frere(sp1);
       elsif Ap_Vide(sp1) then -- sp1 vide
         copie := Ap_Copier_Sans_Frere(sp2);
         Ap_Inserer_Dernier_Fils(resultat, copie);
 
-        sp2 := Frere_Suivant(sp2);
+        sp2 := Ap_Frere(sp2);
       elsif Ap_Valeur(sp1).puiss = Ap_Valeur(sp2).puiss then -- sp1 et sp2 ont la même puissance
         somme := Ajouter(sp1, sp2);
 
@@ -404,18 +389,18 @@ package body p_polynome is
           Ap_Inserer_Dernier_Fils(resultat, somme);
         end if;
 
-        sp1 := Frere_Suivant(sp1);
-        sp2 := Frere_Suivant(sp2);
+        sp1 := Ap_Frere(sp1);
+        sp2 := Ap_Frere(sp2);
       elsif Ap_Valeur(sp1).puiss < Ap_Valeur(sp2).puiss then -- puissance de sp1 plus petite que sp2
         copie := Ap_Copier_Sans_Frere(sp1);
         Ap_Inserer_Dernier_Fils(resultat, copie);
 
-        sp1 := Frere_Suivant(sp1);
+        sp1 := Ap_Frere(sp1);
       else -- puissance de sp1 plus grande que sp2
         copie := Ap_Copier_Sans_Frere(sp2);
         Ap_Inserer_Dernier_Fils(resultat, copie);
 
-        sp2 := Frere_Suivant(sp2);
+        sp2 := Ap_Frere(sp2);
       end if;
 
       exit when Ap_Vide(sp1) and Ap_Vide(sp2);

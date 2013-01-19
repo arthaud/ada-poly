@@ -146,6 +146,9 @@ begin
   Put("Récupération du père");
   Test(Ap_Pere(fils1) = arbre);
 
+  Put("Récupération du père sur une racine");
+  Test(Ap_Vide(Ap_Pere(arbre)));
+
   -- Test de l'exception ARBRE_VIDE
   Put("Exception lors de la récupération du père sur un arbre vide");
   begin
@@ -155,20 +158,14 @@ begin
     when ARBRE_VIDE => Test(true);
   end;
 
-  -- Test de l'exception PERE_ABSENT
-  Put("Exception lors de la récupération du père sur une racine");
-  begin
-    temp := Ap_Pere(arbre);
-    Test(false);
-  exception
-    when PERE_ABSENT => Test(true);
-  end;
-
   -------------------
   -- Test Ap_Frere --
   -------------------
   Put("Récupération du frère");
   Test(Ap_Frere(fils1) = fils2);
+
+  Put("Récupération du frère sur un arbre sans frère");
+  Test(Ap_Vide(Ap_Frere(arbre)));
 
   -- Test de l'exception ARBRE_VIDE
   Put("Exception lors de la récupération du frère sur un arbre vide");
@@ -177,15 +174,6 @@ begin
     Test(false);
   exception
     when ARBRE_VIDE => Test(true);
-  end;
-
-  -- Test de l'exception FRERE_ABSENT
-  Put("Exception lors de la récupération du frère sur un arbre sans frère");
-  begin
-    temp := Ap_Frere(arbre);
-    Test(false);
-  exception
-    when FRERE_ABSENT => Test(true);
   end;
 
   --------------------------
@@ -209,6 +197,9 @@ begin
   Put("Récupération du premier fils");
   Test(Ap_Fils(arbre) = fils1);
 
+  Put("Récupération du fils sur un arbre sans fils");
+  Test(Ap_Vide(Ap_Fils(fils1)));
+
   -- Test de l'exception ARBRE_VIDE
   Put("Exception lors de la récupération du fils sur un arbre vide");
   begin
@@ -216,15 +207,6 @@ begin
     Test(false);
   exception
     when ARBRE_VIDE => Test(true);
-  end;
-
-  -- Test de l'exception FILS_ABSENT
-  Put("Exception lors de la récupération du fils sur un arbre sans fils");
-  begin
-    temp := Ap_Fils(fils1);
-    Test(false);
-  exception
-    when FILS_ABSENT => Test(true);
   end;
 
   -------------------------

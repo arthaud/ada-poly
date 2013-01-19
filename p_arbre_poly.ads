@@ -62,21 +62,21 @@ package p_arbre_poly is
   function Ap_Valeur(a : in arbre_poly) return noeud;
 
   -- Fonction Ap_Pere
-  -- Sémantique : Retourne l'arbre père d'un arbre
+  -- Sémantique : Retourne l'arbre père d'un arbre, ou l'arbre vide s'il n'en a pas
   -- Paramètres : a : arbre_poly (D)
   -- Type retour : arbre_poly
   -- Précondition : /
-  -- Postcondition : Le père de a est retourné
-  -- Exception : ARBRE_VIDE, PERE_ABSENT
+  -- Postcondition : Le père de a est retourné (vide eventuellement)
+  -- Exception : ARBRE_VIDE
   function Ap_Pere(a : in arbre_poly) return arbre_poly;
 
   -- Fonction Ap_Frere
-  -- Sémantique : Retourne le premier frère d'un arbre
+  -- Sémantique : Retourne le premier frère d'un arbre, ou l'arbre vide s'il n'en a pas
   -- Paramètres : a : arbre_poly (D)
   -- Type retour : arbre_poly
   -- Précondition : /
-  -- Postcondition : Le premier frère de a est retourné
-  -- Exception : ARBRE_VIDE, FRERE_ABSENT
+  -- Postcondition : Le premier frère de a est retourné (vide eventuellement)
+  -- Exception : ARBRE_VIDE
   function Ap_Frere(a : in arbre_poly) return arbre_poly;
 
   -- Fonction Ap_Frere_Existe
@@ -89,12 +89,12 @@ package p_arbre_poly is
   function Ap_Frere_Existe(a : in arbre_poly) return boolean;
   
   -- Fonction Ap_Fils
-  -- Sémantique : Retourne le premier fils d'un arbre
+  -- Sémantique : Retourne le premier fils d'un arbre, ou l'arbre vide s'il n'en a pas
   -- Paramètres : a : arbre_poly (D)
   -- Type retour : arbre_poly
   -- Précondition : /
-  -- Postcondition : Le premier fils de a est retourné
-  -- Exception : ARBRE_VIDE, FILS_ABSENT
+  -- Postcondition : Le premier fils de a est retourné (vide eventuellement)
+  -- Exception : ARBRE_VIDE
   function Ap_Fils(a : in arbre_poly) return arbre_poly;
 
   -- Procédure Ap_Afficher
@@ -191,20 +191,20 @@ package p_arbre_poly is
   procedure Ap_Supprimer_Frere(a : in out arbre_poly; n : in integer);
 
   -- Fonction Ap_Copier
-  -- Sémantique : Copier un arbre
+  -- Sémantique : Copier un arbre. Ne copie pas le père.
   -- Paramètres : a : arbre_poly (D)
   -- Type retour : arbre_poly
   -- Précondition : /
-  -- Postcondition : a est copié
+  -- Postcondition : a est copié, excepté le père
   -- Exception : /
   function Ap_Copier(a : in arbre_poly) return arbre_poly;
 
   -- Fonction Ap_Copier_Sans_Frere
-  -- Sémantique : Copier un arbre, sauf les frères de la racine
+  -- Sémantique : Copier un arbre. Ne copie pas le père et les frères de a.
   -- Paramètres : a : arbre_poly (D)
   -- Type retour : arbre_poly
   -- Précondition : /
-  -- Postcondition : a est copié, sauf les frères de sa racine
+  -- Postcondition : a est copié, excepté le père et les frères de a
   -- Exception : /
   function Ap_Copier_Sans_Frere(a : in arbre_poly) return arbre_poly;
 

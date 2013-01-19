@@ -47,6 +47,8 @@ procedure p_arbren_test is
 	v : character;
 	b : boolean;
 begin
+
+  a_vide := An_Creer_Vide;
 	
 	-----------------------------------
   -- Test An_Creer_Vide et An_Vide --
@@ -127,7 +129,6 @@ begin
 	-- Test de l'exception ARBRE_VIDE
 	Put("Exception lors d'une insertion sur un arbre vide");
 	begin
-		a_vide := An_Creer_Vide;
 		An_Inserer_Fils(a_vide, arbre1);
 		Test(false);
 	exception
@@ -136,7 +137,6 @@ begin
 
 	Put("Exception lors d'une insertion d'un arbre vide");
 	begin
-		a_vide := An_Creer_Vide;
 		An_Inserer_Fils(arbre1, a_vide);
 		Test(false);
 	exception
@@ -159,7 +159,6 @@ begin
 	-- Test de l'exception ARBRE_VIDE
 	Put("Exception lors de l'insertion sur un arbre vide");
 	begin
-		a_vide := An_Creer_Vide;
 		arbre1 := An_Creer_Feuille('a');
 		An_Inserer_Frere(a_vide, arbre1);
 		Test(false);
@@ -169,7 +168,6 @@ begin
 
 	Put("Exception lors d'une insertion d'un arbre vide");
 	begin
-		a_vide := An_Creer_Vide;
 		arbre1 := An_Creer_Feuille('a');
 		An_Inserer_Frere(arbre1, a_vide);
 		Test(false);
@@ -259,7 +257,6 @@ begin
 	-- Test de l'exception ARBRE_VIDE
 	Put("Exception lors de la suppression sur un arbre vide");
 	begin
-		a_vide := An_Creer_Vide;
 	  An_Supprimer_Fils(a_vide, 1);
 		Test(false);
 	exception
@@ -301,7 +298,6 @@ begin
 	-- Test de l'exception ARBRE_VIDE
 	Put("Exception lors de la suppression sur un arbre vide");
 	begin
-		a_vide := An_Creer_Vide;
 		An_Supprimer_Frere(a_vide, 1);
 		Test(false);
 	exception
