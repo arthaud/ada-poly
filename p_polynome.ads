@@ -82,6 +82,7 @@ package p_polynome is
     -- Invariants respectés par le type polynome :
     -- * polynome est la racine d'un arbre naire, donc sans frère
     -- * les fils sont rangés dans l'ordre : de la plus petite puissance à la plus grande
+    -- * chaque noeud contenant une variable n'a pas de fils avec une variable situé après dans l'alphabet
     -- * pour un noeud, 
     --    Si const = 0, var /= ' ' et le noeud a au moins un fils
     --    Sinon const /= 0, var = ' ' et le noeud n'a aucun fils
