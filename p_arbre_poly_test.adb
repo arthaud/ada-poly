@@ -14,7 +14,7 @@ procedure p_arbre_poly_test is
     if b then
       Put_line("..  OK");
     else
-      Put_line(".. PAS OK");
+      Put_line(".. ECHEC");
     end if;
   end Test;
 
