@@ -16,6 +16,41 @@ package p_polynome is
 
   LONGUEUR_MAX : exception;
 
+  ------------------------------------------
+  -- Fonction de Manipulation du type str --
+  ------------------------------------------
+  
+  -- Procedure Lire_Entier
+  -- Sémantique : Lire un entier à partir de la position pos
+  -- Paramètres : p : str (D)
+  --              pos : integer (D/R)
+  --              entier : integer (R)
+  -- Précondition : /
+  -- Postcondition : /
+  procedure Lire_Entier(p : in str; pos : in out integer; entier : out integer);
+  
+  -- procedure Ecrire_Caractere
+  -- Sémantique : Ecrit un caractère dans le résultat
+  -- Paramètres : resultat : str (D/R)
+  --              c : character (D)
+  -- Précondition : /
+  -- Postcondition : /
+  -- Exception : LONGUEUR_MAX
+  procedure Ecrire_Caractere(resultat : in out str; c : in character);
+  
+  -- procedure Ecrire_Entier
+  -- Sémantique : Ecrit un entier dans le résultat
+  -- Paramètres : resultat : str (D/R)
+  --              n : integer (D)
+  -- Précondition : n >= 0
+  -- Postcondition : /
+  -- Exception : LONGUEUR_MAX
+  procedure Ecrire_Entier(resultat : in out str; n : in integer);
+ 
+  --------------------------------------------
+  -- Fonction de Manipulation des polynomes --
+  --------------------------------------------
+
   -- Fonction Encoder
   -- Sémantique : Prend un polynôme sous forme de chaine de caractères, et retourne un polynôme
   -- Paramètres : p : str (D)

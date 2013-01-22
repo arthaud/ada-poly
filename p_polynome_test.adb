@@ -23,7 +23,76 @@ procedure p_polynome_test is
 
   string1, string2, string3, string4 : str;
   string_temp : str;
+
+  i, pos : integer;
 begin
+
+  ----------------------
+  -- Test Lire_Entier --
+  ----------------------
+  Put("Lecture d'un entier");
+  string_temp.valeur(1..5) := "123AB";
+  string_temp.longueur := 5;
+  pos := 1;
+
+  Lire_Entier(string_temp, pos, i);
+  Test(pos = 4 and i = 123);
+
+  Put("Lecture d'un entier, cas de fin de chaine");
+  string_temp.valeur(1..5) := "AB654";
+  string_temp.longueur := 5;
+  pos := 3;
+  
+  Lire_Entier(string_temp, pos, i);
+  Test(pos = 6 and i = 654);
+
+  ---------------------------
+  -- Test Ecrire_Caractere --
+  ---------------------------
+  Put("Ecriture d'un caractere en début de chaine");
+  string_temp.longueur := 0;
+  Ecrire_Caractere(string_temp, 'X');
+  Test(string_temp.longueur = 1 and string_temp.valeur(1) = 'X');
+
+  Put("Ecriture d'un caractere en milieu de chaine");
+  string_temp.valeur(1..5) := "ABCDE";
+  string_temp.longueur := 5;
+  Ecrire_Caractere(string_temp, 'F');
+  Test(string_temp.longueur = 6 and string_temp.valeur(1..6) = "ABCDEF");
+
+  -- Test de l'exception LONGUEUR_MAX
+  Put("Exception lorsque la taille du tableau est insuffisante");
+  begin
+    string_temp.longueur := CMAX;
+    Ecrire_Caractere(string_temp, 'X');
+    Test(false);
+  exception
+    when LONGUEUR_MAX => Test(true);
+  end;
+
+  ------------------------
+  -- Test Ecrire_Entier --
+  ------------------------
+  Put("Ecriture d'un entier en début de chaine");
+  string_temp.longueur := 0;
+  Ecrire_Entier(string_temp, 123);
+  Test(string_temp.longueur = 3 and string_temp.valeur(1..3) = "123");
+
+  Put("Ecriture d'un entier en milieu de chaine");
+  string_temp.valeur(1..3) := "ABC";
+  string_temp.longueur := 3;
+  Ecrire_Entier(string_temp, 1);
+  Test(string_temp.longueur = 4 and string_temp.valeur(1..4) = "ABC1");
+
+  -- Test de l'exception LONGUEUR_MAX
+  Put("Exception lorsque la taille du tableau est insuffisante");
+  begin
+    string_temp.longueur := CMAX - 1;
+    Ecrire_Entier(string_temp, 12);
+    Test(false);
+  exception
+    when LONGUEUR_MAX => Test(true);
+  end;
 
   -----------------------------
   -- Test Encoder et Decoder --

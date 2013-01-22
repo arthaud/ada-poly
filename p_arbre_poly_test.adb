@@ -209,7 +209,13 @@ begin
     when ARBRE_VIDE => Test(true);
   end;
 
-  -------------------------
+  ----------------------
+  -- Test Ap_Afficher --
+  ----------------------
+  Put_line("Affichage d'un arbre :");
+  Ap_Afficher(arbre);
+
+ -------------------------
   -- Test Ap_Est_Feuille --
   -------------------------
   Put("Test si un arbre est une feuille");
@@ -238,12 +244,6 @@ begin
   exception
     when ARBRE_VIDE => Test(true);
   end;
-
-  ----------------------
-  -- Test Ap_Afficher --
-  ----------------------
-  Put_line("Affichage d'un arbre :");
-  Ap_Afficher(arbre);
 
   ----------------------------------
   -- Test Ap_Inserer_Dernier_Fils --
