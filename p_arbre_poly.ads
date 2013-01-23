@@ -13,7 +13,6 @@ package p_arbre_poly is
   type arbre_poly is private;
 
   ARBRE_VIDE : exception;
-  PERE_ABSENT : exception;
   FILS_ABSENT : exception;
   FRERE_ABSENT : exception;
 
