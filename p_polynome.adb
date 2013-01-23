@@ -418,6 +418,7 @@ package body p_polynome is
   -- Sémantique : Fait l'addition de deux polynomes
   -- Paramètres : p1 : polynome (D)
   --              p2 : polynome (D)
+  -- Type retour : polynome
   -- Précondition : /
   -- Postcondition : la sortie vaut p1 + p2
   function Ajouter(p1 : in polynome; p2 : in polynome) return polynome is
